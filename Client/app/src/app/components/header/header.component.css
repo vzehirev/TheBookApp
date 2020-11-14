@@ -1,0 +1,23 @@
+.sidenav-trigger {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.brand-logo {
+    padding-left: 1rem;
+}
+
+a {
+    font-weight: bold !important;
+}
+
+@media all and (max-width:450px) {
+    .brand-logo {
+        font-size:1.25rem;
+    }
+
+    .sidenav-trigger {
+        font-size: 1rem;
+    }
+}
