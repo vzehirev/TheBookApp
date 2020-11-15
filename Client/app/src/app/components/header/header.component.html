@@ -4,18 +4,23 @@
       <a href="/" class="brand-logo">The Book App</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger">MENU</a>
       <ul class="right hide-on-med-and-down">
-        <li><a routerLink="/">HOME</a></li>
-        <li><a routerLink="/books">BOOKS</a></li>
-        <li><a routerLink="/register">REGISTER</a></li>
-        <li><a routerLink="/login">LOGIN</a></li>
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
+        <li><a routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
+        <li><a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
+        <li><a routerLink="/register" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">REGISTER</a>
+        </li>
       </ul>
     </div>
   </nav>
 
   <ul class="sidenav" id="mobile-demo">
-    <li class="sidenav-close"><a routerLink="/">HOME</a></li>
-    <li class="sidenav-close"><a routerLink="/books">BOOKS</a></li>
-    <li class="sidenav-close"><a routerLink="/register">REGISTER</a></li>
-    <li class="sidenav-close"><a routerLink="/login">LOGIN</a></li>
+    <li class="sidenav-close"><a routerLink="/" routerLinkActive="mobile-active"
+        [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
+    <li class="sidenav-close"><a routerLink="/books" routerLinkActive="mobile-active"
+        [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
+    <li class="sidenav-close"><a routerLink="/login" routerLinkActive="mobile-active"
+        [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
+    <li class="sidenav-close"><a routerLink="/register" routerLinkActive="mobile-active"
+        [routerLinkActiveOptions]="{exact: true}">REGISTER</a></li>
   </ul>
 </header>

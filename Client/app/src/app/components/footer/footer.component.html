@@ -7,8 +7,12 @@
             </div>
             <div class="col l4 offset-l2 s12">
                 <ul>
-                    <li><a class="grey-text text-lighten-3" href="#!">HOME</a></li>
-                    <li><a class="grey-text text-lighten-3" href="#!">BOOKS</a></li>
+                    <li><a class="grey-text text-lighten-3" routerLink="/" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
+                    <li><a class="grey-text text-lighten-3" routerLink="/books" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
+                    <li><a class="grey-text text-lighten-3" routerLink="/rules" routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}">SITE RULES</a></li>
                 </ul>
             </div>
         </div>

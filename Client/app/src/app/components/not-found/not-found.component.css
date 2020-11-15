@@ -1,0 +1,12 @@
+h2 {
+    text-align: center;
+    color: darkgrey;
+    font-weight: bold;
+}
+
+p {
+    font-weight: bold;
+    text-align: center;
+    color: darkgray;
+    font-size: 1.5rem;
+}
