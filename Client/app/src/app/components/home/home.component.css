@@ -16,12 +16,18 @@ img {
 a {
     position: absolute;
     font-weight: bold;
+    height: auto;
+    max-width: 90%;
+}
+
+a:hover{
+    transform: scale(1.1);
 }
 
 .wrapper {
     display: flex;
     justify-content: center;
-    color: #26a69a;
+    color: #0091ea;
 }
 
 i {
@@ -37,10 +43,11 @@ h3 {
 .box {
     text-align: center;
     margin: 2rem;
+    transition: all 0.5s;
 }
 
 .box:hover {
-    color: #2bbbad;
+    transform: scale(1.1);
     cursor: pointer;
     transition: all 0.5s;
 }
@@ -58,5 +65,11 @@ h2 {
 @media all and (max-width:600px) {
     .wrapper {
         flex-direction: column;
+    }
+}
+
+@media all and (max-width:376px){
+    a {
+        line-height: 2rem;
     }
 }

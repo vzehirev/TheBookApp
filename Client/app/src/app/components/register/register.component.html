@@ -1,1 +1,38 @@
-<p>register works!</p>
+<div class="row">
+    <form class="col s4" [formGroup]='registerForm' (ngSubmit)='registerFormSubmit()'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">account_box</i>
+            <input id="username" type="text" formControlName='username'>
+            <label for="username">Username</label>
+            <p *ngIf='registerForm.controls.username.touched && registerForm.controls.username.errors'>
+                Username must be between 4 and 20 characters.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">email</i>
+            <input id="email" type="email" formControlName='email'>
+            <label for="email">E-mail</label>
+            <p *ngIf='registerForm.controls.email.touched && registerForm.controls.email.errors'>
+                E-mail is not valid.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="password" type="password" autocomplete="on" formControlName='password'>
+            <label for="password">Password</label>
+            <p *ngIf='registerForm.controls.password.touched && registerForm.controls.password.errors'>
+                Password must be between 6 and 20 characters.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="confirm-password" type="password" autocomplete="on"
+                formControlName='confirmPassword'>
+            <label for="confirm-password">Confirm password</label>
+            <p *ngIf='registerForm.controls.confirmPassword.touched && registerForm.controls.confirmPassword.errors'>
+                Confirm password must be the same as Password.
+            </p>
+        </div>
+        <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">REGISTER</button>
+    </form>
+</div>

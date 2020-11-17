@@ -1,0 +1,88 @@
+.input-field label {
+    color: gray;
+}
+
+.input-field input:focus+label {
+    color: #0091ea;
+}
+
+.input-field input:focus {
+    border-bottom: 1px solid #0091ea;
+    box-shadow: 0 1px 0 0 #0091ea;
+}
+
+.input-field input.valid {
+    border-bottom: 1px solid #0091ea;
+    box-shadow: 0 1px 0 0 #0091ea;
+}
+
+.input-field input.invalid {
+    border-bottom: 1px solid red;
+    box-shadow: 0 1px 0 0 red;
+}
+
+.input-field .prefix.active {
+    color: #0091ea;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}
+
+a:hover {
+    transform: scale(1.1);
+    transition: all 0.4s;
+}
+
+a {
+    transition: all 0.4s;
+}
+
+.btn {
+    font-weight: bold;
+}
+
+.row {
+    display: flex;
+    margin-top: 2rem;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.col.s4 {
+    margin-left: 0;
+    width: 500px;
+}
+
+form {
+    text-align: center;
+    max-width: 100%;
+}
+
+a {
+    margin: 2rem;
+    cursor: pointer;
+}
+
+p {
+    color: red;
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.fadein {
+    animation: fadein 0.4s;
+}
+
+.disabled {
+    opacity: 0.5;
+    z-index: -1;
+}

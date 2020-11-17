@@ -1,1 +1,37 @@
-<p>login works!</p>
+<div class="row">
+    <form class="col s4" [formGroup]='loginForm' (ngSubmit)='loginFormSubmit()'
+        [ngClass]='{disabled: forgottenPassword}'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">account_box</i>
+            <input id="username" type="text" formControlName='username'>
+            <label for="username">Username</label>
+            <p *ngIf='loginForm.controls.username.touched && loginForm.controls.username.errors'>
+                Username must be between 4 and 20 characters.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="password" type="password" autocomplete="on" formControlName='password'>
+            <label for="password">Password</label>
+            <p *ngIf='loginForm.controls.password.touched && loginForm.controls.password.errors'>
+                Password must be between 6 and 20 characters.
+            </p>
+        </div>
+        <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">LOGIN</button>
+    </form>
+    <a (click)='forgottenPassword = !forgottenPassword'>Forgotten password?</a>
+
+    <form class="col s4 fadein" [formGroup]='resetPasswordForm' *ngIf='forgottenPassword'
+        (ngSubmit)='resetPasswordFormSubmit()'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">email</i>
+            <input id="reset-email" type="text" formControlName='email'>
+            <label for="reset-email">E-mail</label>
+            <p *ngIf='resetPasswordForm.controls.email.touched && resetPasswordForm.controls.email.errors'>
+                Please enter valid e-mail.
+            </p>
+        </div>
+        <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">RESET
+            PASSWORD</button>
+    </form>
+</div>

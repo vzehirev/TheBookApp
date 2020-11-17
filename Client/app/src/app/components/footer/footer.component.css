@@ -1,9 +1,10 @@
 footer {
     font-weight: bold;
+    color: white;
 }
 
 a:hover {
-    text-decoration:underline;
+    text-decoration: underline;
 }
 
 .active {
