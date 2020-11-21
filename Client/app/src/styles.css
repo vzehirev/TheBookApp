@@ -1,0 +1,49 @@
+:root {
+    --primary-color: #0091ea;
+}
+
+.input-field label {
+    color: gray;
+}
+
+.input-field .prefix.active {
+    color: var(--primary-color);
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}
+
+.btn {
+    font-weight: bold;
+}
+
+input[type]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+input[type]:not(.browser-default):focus:not([readonly])+label {
+    color: var(--primary-color);
+}
+
+textarea label {
+    color: gray;
+}
+
+textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+}
+
+textarea.materialize-textarea:focus:not([readonly])+label {
+    color: var(--primary-color);
+}
+
+textarea .prefix.active {
+    color: var(--primary-color);
+}
+
+.danger {
+    color: red;
+}

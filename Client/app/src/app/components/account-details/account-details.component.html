@@ -1,0 +1,38 @@
+<div class="row">
+    <form class="col s4" [formGroup]='accDetailsForm' (ngSubmit)='accDetailsFormSubmit()'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">account_box</i>
+            <input id="username" type="text" formControlName='username'>
+            <label for="username">Username</label>
+            <p class="danger" *ngIf='accDetailsForm.controls.username.touched && accDetailsForm.controls.username.errors'>
+                Username must be between 4 and 20 characters.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">email</i>
+            <input id="email" type="email" formControlName='email'>
+            <label for="email">E-mail</label>
+            <p class="danger" *ngIf='accDetailsForm.controls.email.touched && accDetailsForm.controls.email.errors'>
+                E-mail is not valid.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="new-password" type="password" autocomplete="on" formControlName='newPassword'>
+            <label for="new-password">New password</label>
+            <p class="danger" *ngIf='accDetailsForm.controls.newPassword.touched && accDetailsForm.controls.newPassword.errors'>
+                Password must be between 6 and 20 characters.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="confirm-new-password" type="password" autocomplete="on"
+                formControlName='confirmNewPassword'>
+            <label for="confirm-new-password">Confirm new password</label>
+            <p class="danger" *ngIf='accDetailsForm.controls.confirmNewPassword.touched && accDetailsForm.controls.confirmNewPassword.errors'>
+                Confirm password must be the same as Password.
+            </p>
+        </div>
+        <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">UPDATE ACCOUNT</button>
+    </form>
+</div>

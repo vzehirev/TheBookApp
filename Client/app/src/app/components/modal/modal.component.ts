@@ -1,4 +1,5 @@
 import { Component, EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -7,7 +8,7 @@ import { Component, EventEmitter } from '@angular/core';
 })
 export class ModalComponent {
   message!: string;
-  closeModal: EventEmitter<boolean> = new EventEmitter();
+  closeModal: Subject<boolean> = new Subject();
 
   setMessage(message: string) {
     this.message = message;

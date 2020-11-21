@@ -12,19 +12,19 @@ img {
     border-radius: 0.5rem;
 }
 
-.comments, .descritption {
+.reviews, .descritption {
     align-self: flex-start;
 }
 
-.comment {
-    box-shadow: 0 0 3px 0px darkgrey;
+.review {
+    box-shadow: 0 0 2px 0px #03A9F4;
     border-radius: 1rem;
     max-width: 90%;
     padding: 0.5rem 1rem;
     margin: 1rem 1rem 1rem 0;
 }
 
-.comment-details {
+.review-details {
     text-align: right;
     font-style: italic;
 }
@@ -35,7 +35,7 @@ img {
     max-width: 30%;
 }
 
-.descritption, .comments {
+.descritption, .reviews {
     width: 100%;
 }
 
@@ -44,34 +44,7 @@ h3 {
     margin-bottom: 3rem;
 }
 
-textarea label {
-    color: gray;
-}
-
-textarea:focus+label {
-    color: #0091ea;
-}
-
-textarea:focus {
-    border-bottom: 1px solid gray !important;
-    box-shadow: 0 1px 0 0 gray !important;
-}
-
-textarea.valid {
-    border-bottom: 1px solid gray;
-    box-shadow: 0 1px 0 0 gray;
-}
-
-textarea.invalid {
-    border-bottom: 1px solid red;
-    box-shadow: 0 1px 0 0 red;
-}
-
-textarea .prefix.active {
-    color: gray;
-}
-
-.leave-comment {
+.leave-review {
     margin-top: 2rem;
 }
 
@@ -95,7 +68,7 @@ textarea .prefix.active {
 }
 
 .btn:hover {
-transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .btn {
@@ -106,7 +79,39 @@ transform: scale(1.1);
     margin: 0;
 }
 
-@media all and (max-width:770px){
+.rating {
+    display: flex;
+}
+
+.tup, .tdown {
+    margin: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    transition: all 0.4s;
+}
+
+.tup:hover, .tdown:hover {
+    transform: scale(1.1);
+    transition: all 0.4s;
+}
+
+i {
+    font-size: 2rem;
+    margin-right: 0.5rem;
+}
+
+.tup {
+    color: limegreen;
+}
+
+.tdown {
+    color: tomato
+}
+
+@media all and (max-width:770px) {
     .col.s12 {
         flex-direction: column;
         align-items: flex-start;

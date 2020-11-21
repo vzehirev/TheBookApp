@@ -1,0 +1,58 @@
+.row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.col.s4 {
+    width: auto;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.btn {
+    display: block;
+    margin: auto;
+    font-weight: bold;
+}
+
+.cover-label {
+    position: relative;
+    color: white;
+    left: 0;
+    background-color: #272727;
+    box-shadow: 0 0 2px darkgrey;
+    border-radius: 3px;
+    padding: .5rem;
+    font-weight: bold;
+    text-align: center;
+    transition: all .4s;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    max-width: 40%;
+    margin: 0 auto;
+    justify-content: space-evenly;
+}
+
+.cover-label:hover {
+    transform: scale(1.1);
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.file-name {
+    margin: .5rem 0 2rem 0;
+}
+
+p {
+    text-align: center;
+}
+
+.danger {
+    color: red;
+}
+
+h4 {
+    font-weight: bold;
+}

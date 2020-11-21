@@ -14,6 +14,10 @@ import { BookCardComponent } from './components/book-card/book-card.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
+import { AddBookComponent } from './components/add-book/add-book.component';
+import { AccountComponent } from './components/account/account.component';
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
+import { MyBooksComponent } from './components/my-books/my-books.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +31,11 @@ import { ModalComponent } from './components/modal/modal.component';
     NotFoundComponent,
     BookCardComponent,
     BookDetailsComponent,
-    ModalComponent
+    ModalComponent,
+    AddBookComponent,
+    AccountComponent,
+    AccountDetailsComponent,
+    MyBooksComponent
   ],
   imports: [
     BrowserModule,

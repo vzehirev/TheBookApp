@@ -44,6 +44,7 @@ h3 {
     text-align: center;
     margin: 2rem;
     transition: all 0.5s;
+    position: relative;
 }
 
 .box:hover {

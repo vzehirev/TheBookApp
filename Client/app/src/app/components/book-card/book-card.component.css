@@ -1,8 +1,28 @@
-a {
-    color: #0091ea !important;
+.details-link {
+    color: #0091ea;
     font-weight: bold;
+    transition: all .4s;
+    display: inline-block;
 }
 
-a:hover {
-    opacity: 0.75;
+a{
+    display: inline-block;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.card {
+    text-align: center;
+}
+
+.details-link:hover {
+    transform: scale(1.1);
+    transition: all .4s;
+}
+
+hr {
+    
+    margin: 0 auto;
+    width: 75%;
+    opacity: 0.4;
 }

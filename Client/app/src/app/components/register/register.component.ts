@@ -28,9 +28,9 @@ export class RegisterComponent{
   }
 
   private confirmPasswordValidator(): ValidatorFn {
-    return (confirmPassword: AbstractControl): { isValid: boolean } | null => {
+    return (confirmPassword: AbstractControl): { passwordsDoNotMatch: boolean } | null => {
       return confirmPassword.value === this.registerForm?.controls.password.value ?
-        null : { isValid: false }
+        null : { passwordsDoNotMatch: true }
     };
   };
 }

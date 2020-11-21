@@ -1,0 +1,20 @@
+ul {
+    padding: 0 1rem;
+    margin: 0;
+}
+
+i {
+    font-size: 2rem;
+}
+
+.collection {
+    border: none;
+}
+
+.collection .collection-item.avatar .secondary-content.r-10 {
+    right: 10px;
+}
+
+.collection .collection-item.avatar .secondary-content.r-50 {
+    right: 50px;
+}

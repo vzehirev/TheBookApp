@@ -28,7 +28,7 @@ export class ModalService {
 
     document.body.appendChild(this.modalEl);
 
-    this.sub = this.modalCompRef.instance.closeModal.asObservable().pipe(filter(x => x === true)).subscribe(x => this.closeModal())
+    this.sub = this.modalCompRef.instance.closeModal.pipe(filter(x => x === true)).subscribe(x => this.closeModal())
 
     return;
   }

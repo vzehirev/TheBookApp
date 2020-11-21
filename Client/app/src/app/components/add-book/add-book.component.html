@@ -1,0 +1,29 @@
+<h4 class="center-align">ADD ARTICLE</h4>
+<div class="row">
+    <form class="col s4" [formGroup]='addBookForm' (ngSubmit)='addBookFormSubmit()'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">title</i>
+            <input id="title" type="text" formControlName='title'>
+            <label for="title">Title</label>
+            <p class="danger" *ngIf='addBookForm.controls.title.touched && addBookForm.controls.title.errors'>
+                Title is a required field.
+            </p>
+        </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">description</i>
+            <textarea id="description" class="materialize-textarea" formControlName='description'></textarea>
+            <label for="description">Description</label>
+            <p class="danger"
+                *ngIf='addBookForm.controls.description.touched && addBookForm.controls.description.errors'>
+                Description must be between 10 and 1000 characters.
+            </p>
+        </div>
+        <div class="col s12 center-align">
+            <label class="cover-label" for="cover">UPLOAD COVER <i class="material-icons prefix">add_a_photo</i></label>
+            <input type="file" id="cover" accept="image/*" hidden (change)="fileInputHandler($event.target)">
+            <p class="file-name">{{addBookForm.controls.cover.value}}</p>
+        </div>
+        <button class="btn waves-effect waves-light light-blue accent-4 center-align" type="submit"
+            name="action">ADD</button>
+    </form>
+</div>
