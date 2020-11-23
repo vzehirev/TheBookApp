@@ -5,6 +5,12 @@ ul {
 
 i {
     font-size: 2rem;
+    transition: all .4s;
+}
+
+i:hover {
+    transform: scale(1.1);
+    transition: all .4s;
 }
 
 .collection {

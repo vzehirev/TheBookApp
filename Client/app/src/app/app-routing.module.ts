@@ -4,6 +4,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { BooksComponent } from './components/books/books.component';
+import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';

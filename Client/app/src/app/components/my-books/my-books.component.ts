@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-books.component.css']
 })
 export class MyBooksComponent implements OnInit {
+  showEdit = false;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  showEditForm() {
+    this.showEdit = true;
+  }
+
+  toggleEditForm(event: any) {
+    this.showEdit = event;
+  }
 }
