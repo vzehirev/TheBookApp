@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBookApp.Db.Models
 {
@@ -8,6 +9,10 @@ namespace TheBookApp.Db.Models
         public int Id { get; set; }
 
         [Required]
+        public string UserId { get; set; }
+        public User User { get; set; }
+
+        [Required]
         public string Title { get; set; }
 
         [Required, MinLength(10), MaxLength(1000)]
@@ -15,5 +20,7 @@ namespace TheBookApp.Db.Models
 
         [Required]
         public string CoverUrl { get; set; }
+
+        public IEnumerable<Rating> Ratings { get; set; }
     }
 }

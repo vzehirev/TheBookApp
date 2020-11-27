@@ -19,6 +19,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { MyBooksComponent } from './components/my-books/my-books.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { EditBookComponent } from './components/edit-book/edit-book.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

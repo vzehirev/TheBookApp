@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginUserModel } from 'src/app/models/users/login-user-model';
 import { ModalService } from 'src/app/services/modal/modal.service';
 import { UsersService } from 'src/app/services/users/users.service';
 
@@ -10,7 +12,10 @@ import { UsersService } from 'src/app/services/users/users.service';
 })
 export class LoginComponent {
 
-  constructor(private formBuilder: FormBuilder, private modalService: ModalService, private usersService: UsersService) { }
+  constructor(private formBuilder: FormBuilder,
+    private modalService: ModalService,
+    private usersService: UsersService,
+    private router: Router) { }
 
   forgottenPassword: boolean = false;
 
@@ -28,7 +33,11 @@ export class LoginComponent {
       this.modalService.openModal('Please correctly fill in the fields.');
       return;
     }
-    this.usersService.loginUser('usrn', 'pass');
+
+    let inputModel = new LoginUserModel(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+    this.usersService.loginUser(inputModel);
+
+    this.router.navigate(['/']);
   }
 
   resetPasswordFormSubmit() {
@@ -36,6 +45,7 @@ export class LoginComponent {
       this.modalService.openModal('Please correctly fill in your e-mail.');
       return;
     }
-    this.usersService.resetPassword('email');
+
+    this.usersService.resetPassword(this.resetPasswordForm.controls.email.value);
   }
 }

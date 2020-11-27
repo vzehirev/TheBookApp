@@ -1,36 +1,57 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheBookApp.Db;
 using TheBookApp.Db.Models;
+using TheBookApp.DTOs.Books;
 
 namespace TheBookApp.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Route("[controller]")]
     public class BooksController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext dbContext;
+        private readonly UserManager<User> userManager;
 
-        public BooksController(AppDbContext context)
+        public BooksController(AppDbContext dbContext, UserManager<User> userManager)
         {
-            _context = context;
+            this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
-        // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks()
         {
-            return await _context.Books.ToListAsync();
+            return await dbContext.Books
+                .Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                })
+                .ToArrayAsync();
         }
 
-        // GET: api/Books/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<ActionResult<BookDetailsDto>> GetBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await dbContext.Books
+                .Where(b => b.Id == id)
+                .Select(b => new BookDetailsDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    CoverUrl = b.CoverUrl,
+                    Upvotes = b.Ratings.Count(r => r.IsUp),
+                    Downvotes = b.Ratings.Count(r => !r.IsUp),
+                })
+                .SingleOrDefaultAsync();
 
             if (book == null)
             {
@@ -40,69 +61,111 @@ namespace TheBookApp.Controllers
             return book;
         }
 
-        // PUT: api/Books/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        [Authorize, HttpPost, Route("add")]
+        public async Task<IActionResult> AddBook(AddBookDto inputModel)
         {
-            if (id != book.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return StatusCode(StatusCodes.Status406NotAcceptable);
             }
 
-            _context.Entry(book).State = EntityState.Modified;
+            var user = await userManager.GetUserAsync(User);
 
-            try
+            var book = new Book
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                UserId = user.Id,
+                Title = inputModel.Title,
+                Description = inputModel.Description,
+                CoverUrl = inputModel.CoverUrl,
+            };
 
-            return NoContent();
+            dbContext.Books.Add(book);
+            await dbContext.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status201Created);
         }
 
-        // POST: api/Books
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        [Authorize, HttpPut, Route("edit")]
+        public async Task<IActionResult> EditBook(EditBookDto inputModel)
         {
-            _context.Books.Add(book);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable);
+            }
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            var book = await dbContext.Books.FindAsync(inputModel.Id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            book.Title = inputModel.Title;
+            book.Description = inputModel.Description;
+            book.CoverUrl = inputModel.CoverUrl;
+
+            dbContext.Books.Update(book);
+            await dbContext.SaveChangesAsync();
+
+            return Ok();
         }
 
-        // DELETE: api/Books/5
+
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Book>> DeleteBook(int id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await dbContext.Books.FindAsync(id);
+
             if (book == null)
             {
                 return NotFound();
             }
 
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            dbContext.Books.Remove(book);
+            await dbContext.SaveChangesAsync();
 
-            return book;
+            return Ok();
         }
 
-        private bool BookExists(int id)
+        [Authorize, HttpPost("{id}"), Route("vote")]
+        public async Task<IActionResult> Vote(int id, bool isUp)
         {
-            return _context.Books.Any(e => e.Id == id);
+            var book = await dbContext.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var user = await userManager.GetUserAsync(User);
+
+            var rating = dbContext.Ratings.SingleOrDefault(r => r.BookId == book.Id && r.UserId == user.Id);
+
+            if (rating != null && rating.IsUp == isUp)
+            {
+                dbContext.Ratings.Remove(rating);
+            }
+            else if (rating != null)
+            {
+                rating.IsUp = isUp;
+
+                dbContext.Ratings.Update(rating);
+            }
+            else
+            {
+                rating = new Rating
+                {
+                    BookId = book.Id,
+                    UserId = user.Id,
+                    IsUp = isUp,
+                };
+
+                dbContext.Ratings.Add(rating);
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

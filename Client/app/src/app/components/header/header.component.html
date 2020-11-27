@@ -6,9 +6,18 @@
       <ul class="right hide-on-med-and-down">
         <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
         <li><a routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
-        <li><a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
-        <li><a routerLink="/register" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">REGISTER</a>
-        </li>
+
+        <ng-container *ngIf='!usersService.isUserLoggedIn()'>
+          <li><a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
+          <li><a routerLink="/register" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">REGISTER</a>
+          </li>
+        </ng-container>
+
+        <ng-container *ngIf='usersService.isUserLoggedIn()'>
+          <li><a routerLink="/account" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">username</a></li>
+          <li><a routerLink="/logout" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGOUT</a>
+          </li>
+        </ng-container>
       </ul>
     </div>
   </nav>
