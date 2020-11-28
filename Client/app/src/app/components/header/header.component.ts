@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsersService } from 'src/app/services/users/users.service';
 
 @Component({
@@ -11,11 +12,17 @@ export class HeaderComponent implements OnInit {
 
   constructor(private renderer2: Renderer2,
     @Inject(DOCUMENT) private document: Document,
-    private usersService: UsersService) {
+    public usersService: UsersService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
     this.initMobileMenu();
+  }
+
+  logout() {
+    this.usersService.logoutUser();
+    this.router.navigate(['/']);
   }
 
   private initMobileMenu(): void {

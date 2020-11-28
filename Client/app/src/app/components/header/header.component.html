@@ -7,17 +7,20 @@
         <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
         <li><a routerLink="/books" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
 
-        <ng-container *ngIf='!usersService.isUserLoggedIn()'>
+        <ng-container *ngIf='!usersService.isUserLoggedIn'>
           <li><a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
           <li><a routerLink="/register" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">REGISTER</a>
           </li>
         </ng-container>
 
-        <ng-container *ngIf='usersService.isUserLoggedIn()'>
-          <li><a routerLink="/account" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">username</a></li>
-          <li><a routerLink="/logout" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">LOGOUT</a>
+        <ng-container *ngIf='usersService.isUserLoggedIn'>
+          <li><a routerLink="/account" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">ACCOUNT
+              ({{usersService.username}})</a>
+          </li>
+          <li><a (click)='logout()'>LOGOUT</a>
           </li>
         </ng-container>
+
       </ul>
     </div>
   </nav>
@@ -27,9 +30,19 @@
         [routerLinkActiveOptions]="{exact: true}">HOME</a></li>
     <li class="sidenav-close"><a routerLink="/books" routerLinkActive="mobile-active"
         [routerLinkActiveOptions]="{exact: true}">BOOKS</a></li>
-    <li class="sidenav-close"><a routerLink="/login" routerLinkActive="mobile-active"
-        [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
-    <li class="sidenav-close"><a routerLink="/register" routerLinkActive="mobile-active"
-        [routerLinkActiveOptions]="{exact: true}">REGISTER</a></li>
+
+    <ng-container *ngIf='!usersService.isUserLoggedIn'>
+      <li class="sidenav-close"><a routerLink="/login" routerLinkActive="mobile-active"
+          [routerLinkActiveOptions]="{exact: true}">LOGIN</a></li>
+      <li class="sidenav-close"><a routerLink="/register" routerLinkActive="mobile-active"
+          [routerLinkActiveOptions]="{exact: true}">REGISTER</a></li>
+    </ng-container>
+
+    <ng-container *ngIf='usersService.isUserLoggedIn'>
+      <li class="sidenav-close"><a routerLink="/account" routerLinkActive="mobile-active"
+          [routerLinkActiveOptions]="{exact: true}">ACCOUNT ({{usersService.username}})</a></li>
+      <li class="sidenav-close"><a (click)='logout()'>LOGOUT</a></li>
+    </ng-container>
+
   </ul>
 </header>

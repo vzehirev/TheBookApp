@@ -4,12 +4,12 @@ import { RegisterUserModel } from 'src/app/models/users/register-user-model';
 import { HttpClient } from '@angular/common/http';
 import { LoginUserModel } from 'src/app/models/users/login-user-model';
 import { IJwtResponse } from 'src/app/interfaces/i-jwt-response';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-
   constructor(private httpClient: HttpClient) { }
 
   registerUser(inputModel: RegisterUserModel) {
@@ -32,7 +32,16 @@ export class UsersService {
     localStorage.setItem('username', username);
   }
 
-  isUserLoggedIn(): boolean {
+  get isUserLoggedIn(): boolean {
     return localStorage.getItem('jwt') !== null && localStorage.getItem('username') !== null;
+  }
+
+  get username(): string | null {
+    return localStorage.getItem('username');
+  }
+
+  logoutUser(): void {
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('username');
   }
 }
