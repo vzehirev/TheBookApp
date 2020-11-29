@@ -1,5 +1,3 @@
 <div class="row">
-    <app-book-card class="col s4"></app-book-card>
-    <app-book-card class="col s4"></app-book-card>
-    <app-book-card class="col s4"></app-book-card>
+    <app-book-card class="col s4" *ngFor='let book of books | async' [book]='book'></app-book-card>
 </div>

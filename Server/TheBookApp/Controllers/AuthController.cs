@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -69,27 +68,28 @@ namespace TheBookApp.Controllers
             }
 
             var jwt = GenerateJwt(user.Id, user.UserName);
-            var refreshJwt = GenerateRefreshJwt(jwt);
+            var refreshJwt = GenerateRefreshJwt(user.Id);
 
             return ReturnTokensResponse(jwt, refreshJwt);
         }
 
-        [Authorize, HttpPost, Route("refreshJwt")]
+        [HttpPost, Route("refreshJwt")]
         public async Task<IActionResult> RefreshJwtAsync()
         {
-            var user = await userManager.GetUserAsync(User);
-            var jwt = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", string.Empty);
             string refreshJwt;
+            if (!HttpContext.Request.Cookies.TryGetValue("refreshJwt", out refreshJwt))
+            {
+                return Unauthorized();
+            }
 
-            if (user == null
-                || !HttpContext.Request.Cookies.TryGetValue("refreshJwt", out refreshJwt)
-                || !ValidateRefreshJwt(refreshJwt, jwt))
+            var user = await GetUserFromRefreshJwt(refreshJwt);
+            if (user == null)
             {
                 return Unauthorized();
             }
 
             var newJwt = GenerateJwt(user.Id, user.UserName);
-            var newRefreshJwt = GenerateRefreshJwt(newJwt);
+            var newRefreshJwt = GenerateRefreshJwt(user.Id);
 
             return ReturnTokensResponse(newJwt, newRefreshJwt);
         }
@@ -112,7 +112,7 @@ namespace TheBookApp.Controllers
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        private string GenerateRefreshJwt(string jwt)
+        private string GenerateRefreshJwt(string userId)
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["RefreshJWT:Key"]));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
@@ -121,7 +121,7 @@ namespace TheBookApp.Controllers
                 audience: configuration["RefreshJWT:Audience"],
                 signingCredentials: signingCredentials,
                 expires: DateTime.UtcNow.AddDays(double.Parse(configuration["RefreshJWT:DurationInDays"])),
-                claims: new Claim[] { new Claim("jwt", jwt) });
+                claims: new Claim[] { new Claim("id", userId) });
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
@@ -141,7 +141,7 @@ namespace TheBookApp.Controllers
             return Ok(new { jwt });
         }
 
-        private bool ValidateRefreshJwt(string refreshJwt, string jwt)
+        private async Task<User> GetUserFromRefreshJwt(string refreshJwt)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
 
@@ -161,15 +161,19 @@ namespace TheBookApp.Controllers
 
                 foreach (var claim in refreshJwtClaims.Claims)
                 {
-                    if (claim.Type == "jwt" && claim.Value == jwt)
+                    if (claim.Type == "id")
                     {
-                        return true;
+                        var user = await userManager.FindByIdAsync(claim.Value);
+                        if (user != null)
+                        {
+                            return user;
+                        }
                     }
                 }
             }
             catch (Exception) { }
 
-            return false;
+            return null;
         }
     }
 }

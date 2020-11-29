@@ -19,7 +19,8 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { MyBooksComponent } from './components/my-books/my-books.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,9 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,15 +9,17 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AuthGuard } from './guards/auth';
+import { GuestGuard } from './guards/guest';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'details', component: BookDetailsComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
   { path: 'books', component: BooksComponent },
-  { path: 'add', component: AddBookComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'account', component: AccountComponent },
+  { path: 'details', component: BookDetailsComponent },
+  { path: 'add', component: AddBookComponent, canActivate: [AuthGuard] },
+  { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent }
 ];
 
