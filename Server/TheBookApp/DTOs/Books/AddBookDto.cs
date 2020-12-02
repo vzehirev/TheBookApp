@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace TheBookApp.DTOs.Books
 {
@@ -11,6 +12,6 @@ namespace TheBookApp.DTOs.Books
         public string Description { get; set; }
 
         [Required]
-        public string CoverUrl { get; set; }
+        public IFormFile Cover { get; set; }
     }
 }

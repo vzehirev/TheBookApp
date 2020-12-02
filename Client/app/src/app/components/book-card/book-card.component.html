@@ -2,15 +2,15 @@
     <div class="col s12">
         <div class="card">
             <div class="card-image">
-                <img src="https://materializecss.com/images/sample-1.jpg">
+                <img src="{{book!.coverUrl}}">
                 <span class="card-title">{{book!.title}}</span>
             </div>
             <div class="card-content">
-                <p>{{book!.description}}</p>
+                <p>{{book!.description.substring(0, 75)}}...</p>
             </div>
             <hr />
             <div class="details-link center-align">
-                <a routerLink="/details">DETAILS</a>
+                <a routerLink="/details/{{book!.id}}">DETAILS</a>
             </div>
         </div>
     </div>

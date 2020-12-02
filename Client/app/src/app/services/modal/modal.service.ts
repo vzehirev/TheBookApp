@@ -17,7 +17,7 @@ export class ModalService {
     private injector: Injector
   ) { }
 
-  openModal(message: string) {
+  openModal(message: string): void {
     this.modalCompRef = this.resolver.resolveComponentFactory(ModalComponent).create(this.injector);
 
     this.modalCompRef.instance.setMessage(message);
@@ -29,11 +29,9 @@ export class ModalService {
     document.body.appendChild(this.modalEl);
 
     this.sub = this.modalCompRef.instance.closeModal.pipe(filter(x => x === true)).subscribe(x => this.closeModal())
-
-    return;
   }
 
-  private closeModal() {
+  private closeModal(): void {
     document.body.removeChild(this.modalEl);
     this.sub.unsubscribe();
     this.modalCompRef.destroy();

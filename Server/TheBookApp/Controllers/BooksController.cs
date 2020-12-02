@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using TheBookApp.Db;
 using TheBookApp.Db.Models;
 using TheBookApp.DTOs.Books;
+using TheBookApp.Services;
 
 namespace TheBookApp.Controllers
 {
@@ -17,11 +19,13 @@ namespace TheBookApp.Controllers
     {
         private readonly AppDbContext dbContext;
         private readonly UserManager<User> userManager;
+        private readonly ImagesService imagesService;
 
-        public BooksController(AppDbContext dbContext, UserManager<User> userManager)
+        public BooksController(AppDbContext dbContext, UserManager<User> userManager, ImagesService imagesService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
+            this.imagesService = imagesService;
         }
 
         [HttpGet]
@@ -33,6 +37,7 @@ namespace TheBookApp.Controllers
                     Id = b.Id,
                     Title = b.Title,
                     Description = b.Description,
+                    CoverUrl = b.CoverUrl
                 })
                 .ToArrayAsync();
         }
@@ -61,8 +66,25 @@ namespace TheBookApp.Controllers
             return book;
         }
 
+        [Authorize, HttpGet, Route("my-books")]
+        public async Task<ActionResult<BookDto[]>> MyBooks()
+        {
+            var userId = userManager.GetUserId(User);
+
+            return await dbContext.Books
+                .Where(b => b.UserId == userId).
+                Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Description = b.Description,
+                    CoverUrl = b.CoverUrl
+                })
+                .ToArrayAsync();
+        }
+
         [Authorize, HttpPost, Route("add")]
-        public async Task<IActionResult> AddBook(AddBookDto inputModel)
+        public async Task<IActionResult> AddBook([FromForm] AddBookDto inputModel)
         {
             if (!ModelState.IsValid)
             {
@@ -75,9 +97,13 @@ namespace TheBookApp.Controllers
             {
                 UserId = user.Id,
                 Title = inputModel.Title,
-                Description = inputModel.Description,
-                CoverUrl = inputModel.CoverUrl,
+                Description = inputModel.Description
             };
+
+            using (Stream imageFileStream = inputModel.Cover.OpenReadStream())
+            {
+                book.CoverUrl = await imagesService.UploadImageAsync(imageFileStream);
+            }
 
             dbContext.Books.Add(book);
             await dbContext.SaveChangesAsync();
@@ -85,8 +111,31 @@ namespace TheBookApp.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        [Authorize, HttpDelete("{id}")]
+        public async Task<ActionResult<BookDto[]>> DeleteBook(int id)
+        {
+            var book = await dbContext.Books.FindAsync(id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            var userId = userManager.GetUserId(User);
+
+            if (book.UserId != userId)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+
+            dbContext.Books.Remove(book);
+            await dbContext.SaveChangesAsync();
+
+            return await MyBooks();
+        }
+
         [Authorize, HttpPut, Route("edit")]
-        public async Task<IActionResult> EditBook(EditBookDto inputModel)
+        public async Task<IActionResult> EditBook([FromForm] EditBookDto inputModel)
         {
             if (!ModelState.IsValid)
             {
@@ -100,28 +149,24 @@ namespace TheBookApp.Controllers
                 return NotFound();
             }
 
-            book.Title = inputModel.Title;
-            book.Description = inputModel.Description;
-            book.CoverUrl = inputModel.CoverUrl;
-
-            dbContext.Books.Update(book);
-            await dbContext.SaveChangesAsync();
-
-            return Ok();
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook(int id)
-        {
-            var book = await dbContext.Books.FindAsync(id);
-
-            if (book == null)
+            if (book.UserId != userManager.GetUserId(User))
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            dbContext.Books.Remove(book);
+
+            book.Title = inputModel.Title;
+            book.Description = inputModel.Description;
+
+            if (inputModel.NewCover != null)
+            {
+                using (Stream imageFileStream = inputModel.NewCover.OpenReadStream())
+                {
+                    book.CoverUrl = await imagesService.UploadImageAsync(imageFileStream);
+                }
+            }
+
+            dbContext.Books.Update(book);
             await dbContext.SaveChangesAsync();
 
             return Ok();

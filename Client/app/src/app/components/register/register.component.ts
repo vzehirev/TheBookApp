@@ -42,7 +42,7 @@ export class RegisterComponent {
   private loginUser() {
     let loginModel = new LoginUserModel(this.registerForm.controls.username.value, this.registerForm.controls.password.value);
 
-    this.usersService.loginUser(loginModel);
+    this.usersService.loginUser(loginModel).subscribe(res => this.usersService.persistSession(res));
 
     this.router.navigate(['/']);
   }

@@ -21,6 +21,7 @@ import { MyBooksComponent } from './components/my-books/my-books.component';
 import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth';
+import { ErrorInterceptor } from './interceptors/error';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AuthInterceptor } from './interceptors/auth';
     HttpClientModule
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

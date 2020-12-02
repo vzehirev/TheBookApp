@@ -4,6 +4,7 @@ import { RegisterUserModel } from 'src/app/models/users/register-user-model';
 import { HttpClient } from '@angular/common/http';
 import { LoginUserModel } from 'src/app/models/users/login-user-model';
 import { IJwtResponse } from 'src/app/interfaces/i-jwt-response';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +16,19 @@ export class UsersService {
     return this.httpClient.post(Endpoints.Register, inputModel);
   }
 
-  loginUser(inputModel: LoginUserModel): void {
-    this.httpClient.post<IJwtResponse>(Endpoints.Login, inputModel)
-      .subscribe(jwtResponse => this.persistSession(jwtResponse));
+  loginUser(inputModel: LoginUserModel): Observable<IJwtResponse> {
+    return this.httpClient.post<IJwtResponse>(Endpoints.Login, inputModel);;
   }
 
-  refreshJwt(): void {
-    this.httpClient.post<IJwtResponse>(Endpoints.RefreshJwt, {})
-      .subscribe(jwtResponse => this.persistSession(jwtResponse));
+  refreshJwt(): Observable<IJwtResponse> {
+    return this.httpClient.post<IJwtResponse>(Endpoints.RefreshJwt, {});
   }
 
   resetPassword(email: string): void {
     console.log('Resetting password...');
   }
 
-  private persistSession(jwtResponse: IJwtResponse): void {
+  persistSession(jwtResponse: IJwtResponse): void {
     let username = (JSON.parse(atob(jwtResponse.jwt.split('.')[1]))).username;
 
     localStorage.setItem('jwt', jwtResponse.jwt);

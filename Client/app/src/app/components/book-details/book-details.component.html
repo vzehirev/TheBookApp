@@ -1,6 +1,6 @@
-<section class="book-details">
-  <h3>Book Title</h3>
-  <img src="https://materializecss.com/images/sample-1.jpg" />
+<section class="book-details" *ngIf='book'>
+  <h3>{{book!.title}}</h3>
+  <img src="{{book!.coverUrl}}" />
   <div class="rating">
     <div class="tup">
       <i class="material-icons prefix">thumb_up</i>
@@ -14,13 +14,7 @@
   <div class="description">
     <h5>Description</h5>
     <div class="line"></div>
-    <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur eum esse, placeat sed ut iste praesentium
-      qui
-      explicabo ipsa maiores, quod corrupti maxime in nam repudiandae error obcaecati, reiciendis magnam.
-      Repudiandae eligendi porro quis aliquam modi accusantium temporibus maiores labore facilis quibusdam quia
-      quisquam
-      ipsam aut est ullam, quaerat et atque dolores commodi blanditiis iusto similique corporis soluta quidem.
+    <p>{{book!.description}}
     </p>
   </div>
   <div class="reviews">

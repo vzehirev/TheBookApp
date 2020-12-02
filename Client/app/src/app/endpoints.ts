@@ -9,6 +9,7 @@ export class Endpoints {
     static Books = `${Endpoints.Server}/books`;
     static AllBooks = Endpoints.Books;
     static GetBook = Endpoints.Books;
+    static MyBooks = `${Endpoints.Books}/my-books`;
     static AddBook = `${Endpoints.Books}/add`;
     static EditBook = `${Endpoints.Books}/edit`;
     static DeleteBook = Endpoints.Books;

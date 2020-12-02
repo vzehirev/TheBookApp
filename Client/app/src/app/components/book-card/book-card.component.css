@@ -3,9 +3,11 @@
     font-weight: bold;
     transition: all .4s;
     display: inline-block;
+    margin-top: auto;
+    margin-bottom: 10px;
 }
 
-a{
+a {
     display: inline-block;
     padding: 1rem;
     font-size: 1.1rem;
@@ -13,6 +15,9 @@ a{
 
 .card {
     text-align: center;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
 }
 
 .details-link:hover {
@@ -21,8 +26,20 @@ a{
 }
 
 hr {
-    
     margin: 0 auto;
     width: 75%;
     opacity: 0.4;
+}
+
+.card .card-image .card-title {
+    font-weight: bold;
+    padding: 5px;
+    background-color: #0000007a;
+    font-size: 1.3rem;
+    overflow-wrap: break-word;
+}
+
+.card .card-image img {
+    height: 250px;
+    object-fit: cover;
 }

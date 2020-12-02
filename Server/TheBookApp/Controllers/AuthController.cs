@@ -68,30 +68,8 @@ namespace TheBookApp.Controllers
             }
 
             var jwt = GenerateJwt(user.Id, user.UserName);
-            var refreshJwt = GenerateRefreshJwt(user.Id);
 
-            return ReturnTokensResponse(jwt, refreshJwt);
-        }
-
-        [HttpPost, Route("refreshJwt")]
-        public async Task<IActionResult> RefreshJwtAsync()
-        {
-            string refreshJwt;
-            if (!HttpContext.Request.Cookies.TryGetValue("refreshJwt", out refreshJwt))
-            {
-                return Unauthorized();
-            }
-
-            var user = await GetUserFromRefreshJwt(refreshJwt);
-            if (user == null)
-            {
-                return Unauthorized();
-            }
-
-            var newJwt = GenerateJwt(user.Id, user.UserName);
-            var newRefreshJwt = GenerateRefreshJwt(user.Id);
-
-            return ReturnTokensResponse(newJwt, newRefreshJwt);
+            return Ok(new { jwt });
         }
 
         private string GenerateJwt(string userId, string username)
@@ -102,7 +80,7 @@ namespace TheBookApp.Controllers
                 issuer: configuration["JWT:Issuer"],
                 audience: configuration["JWT:Audience"],
                 signingCredentials: signingCredentials,
-                expires: DateTime.UtcNow.AddMinutes(double.Parse(configuration["JWT:DurationInMinutes"])),
+                expires: DateTime.UtcNow.AddDays(double.Parse(configuration["JWT:DurationInDays"])),
                 claims: new Claim[]
                 {
                     new Claim("id", userId),
@@ -110,70 +88,6 @@ namespace TheBookApp.Controllers
                 });
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
-        }
-
-        private string GenerateRefreshJwt(string userId)
-        {
-            var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["RefreshJWT:Key"]));
-            var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
-            var jwtToken = new JwtSecurityToken(
-                issuer: configuration["RefreshJWT:Issuer"],
-                audience: configuration["RefreshJWT:Audience"],
-                signingCredentials: signingCredentials,
-                expires: DateTime.UtcNow.AddDays(double.Parse(configuration["RefreshJWT:DurationInDays"])),
-                claims: new Claim[] { new Claim("id", userId) });
-
-            return new JwtSecurityTokenHandler().WriteToken(jwtToken);
-        }
-
-        private IActionResult ReturnTokensResponse(string jwt, string refreshJwt)
-        {
-            HttpContext.Response.Cookies.Append("refreshJwt", refreshJwt, new CookieOptions
-            {
-                Path = "/auth/refreshJwt",
-                HttpOnly = true,
-                IsEssential = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                MaxAge = TimeSpan.FromDays(90)
-            });
-
-            return Ok(new { jwt });
-        }
-
-        private async Task<User> GetUserFromRefreshJwt(string refreshJwt)
-        {
-            var jwtHandler = new JwtSecurityTokenHandler();
-
-            try
-            {
-                var refreshJwtClaims = jwtHandler.ValidateToken(refreshJwt, new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["RefreshJWT:Issuer"],
-                    ValidateIssuer = true,
-                    ValidAudience = configuration["RefreshJWT:Audience"],
-                    ValidateAudience = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["RefreshJWT:Key"])),
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidateLifetime = true
-                }, out var _);
-
-                foreach (var claim in refreshJwtClaims.Claims)
-                {
-                    if (claim.Type == "id")
-                    {
-                        var user = await userManager.FindByIdAsync(claim.Value);
-                        if (user != null)
-                        {
-                            return user;
-                        }
-                    }
-                }
-            }
-            catch (Exception) { }
-
-            return null;
         }
     }
 }

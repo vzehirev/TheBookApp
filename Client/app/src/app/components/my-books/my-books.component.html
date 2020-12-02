@@ -1,16 +1,11 @@
 <h5 class="center-align">MY BOOKS</h5>
 <ul class="collection">
-    <li class="collection-item avatar">
-        <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle">
-        <span class="title">Title</span>
-        <a class="secondary-content r-50" (click)='showEditForm()'><i class="material-icons">edit</i></a>
-        <a href="#!" class="secondary-content r-10"><i class="material-icons danger">delete_forever</i></a>
-    </li>
-    <li class="collection-item avatar">
-        <i class="material-icons circle">folder</i>
-        <span class="title">Title</span>
-        <a href="#!" class="secondary-content r-50"><i class="material-icons">edit</i></a>
-        <a href="#!" class="secondary-content r-10"><i class="material-icons danger">delete_forever</i></a>
+    <li class="collection-item avatar" *ngFor="let book of myBooks">
+        <img src="{{book.coverUrl}}" alt="" class="circle">
+        <span class="title">{{book.title}}</span>
+        <a class="secondary-content r-50" (click)='editBook(book.id)'><i class="material-icons">edit</i></a>
+        <a class="secondary-content r-10" (click)='deleteBook(book.id)'><i
+                class="material-icons danger">delete_forever</i></a>
     </li>
 </ul>
-<app-edit-book *ngIf='showEdit' (toggleEditForm)='toggleEditForm($event)'></app-edit-book>
+<app-edit-book *ngIf='showEdit' (toggleEditForm)='toggleEditForm($event)' [book]='bookForEdit'></app-edit-book>

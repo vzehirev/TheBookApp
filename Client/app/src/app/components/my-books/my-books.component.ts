@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IBook } from 'src/app/interfaces/i-book';
+import { BooksService } from 'src/app/services/books/books.service';
 
 @Component({
   selector: 'app-my-books',
@@ -6,18 +9,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-books.component.css']
 })
 export class MyBooksComponent implements OnInit {
-  showEdit = false;
+  showEdit: boolean = false;
+  @Output() bookForEdit?: IBook;
+  myBooks: IBook[] = [];
 
-  constructor() { }
+  constructor(private booksService: BooksService) {
+    this.booksService.getMyBooks().subscribe(res => this.myBooks = res);
+  }
 
   ngOnInit(): void {
   }
 
-  showEditForm() {
+  editBook(id: number) {
     this.showEdit = true;
+    this.bookForEdit = this.myBooks.find(b => b.id === id);
   }
 
   toggleEditForm(event: any) {
     this.showEdit = event;
+    this.booksService.getMyBooks().subscribe(res => this.myBooks = res);
+  }
+
+  deleteBook(id: number): void {
+    if (confirm('Confirm book deletion?')) {
+      this.booksService.deleteBook(id).subscribe(() => this.myBooks = this.myBooks.filter(b => b.id !== id));
+    }
   }
 }

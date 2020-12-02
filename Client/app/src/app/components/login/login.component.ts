@@ -35,7 +35,7 @@ export class LoginComponent {
     }
 
     let inputModel = new LoginUserModel(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
-    this.usersService.loginUser(inputModel);
+    this.usersService.loginUser(inputModel).subscribe(res => this.usersService.persistSession(res));
 
     this.router.navigate(['/']);
   }

@@ -1,21 +1,19 @@
 <section class="edit-book">
     <div class="modal">
         <h5>EDIT</h5>
-        <form class="col s4" [formGroup]='editBookForm' (ngSubmit)='editBookFormSubmit()'>
+        <form class="col s4" [formGroup]='editBookForm!' (ngSubmit)='editBookFormSubmit()'>
             <div class="input-field col s12">
                 <i class="material-icons prefix">title</i>
                 <input id="title" type="text" formControlName='title'>
-                <label for="title">Title</label>
-                <p class="danger" *ngIf='editBookForm.controls.title.touched && editBookForm.controls.title.errors'>
+                <p class="danger" *ngIf='editBookForm!.controls.title.touched && editBookForm!.controls.title.errors'>
                     Title is a required field.
                 </p>
             </div>
             <div class="input-field col s12">
                 <i class="material-icons prefix">description</i>
-                <textarea id="description" class="materialize-textarea" formControlName='description'></textarea>
-                <label for="description">Description</label>
+                <textarea id="description" class="textarea" formControlName='description' rows="20"></textarea>
                 <p class="danger"
-                    *ngIf='editBookForm.controls.description.touched && editBookForm.controls.description.errors'>
+                    *ngIf='editBookForm!.controls.description.touched && editBookForm!.controls.description.errors'>
                     Description must be between 10 and 1000 characters.
                 </p>
             </div>
@@ -23,13 +21,13 @@
                 <label class="cover-label" for="cover">UPLOAD NEW COVER <i
                         class="material-icons prefix">add_a_photo</i></label>
                 <input type="file" id="cover" accept="image/*" hidden (change)="fileInputHandler($event.target)">
-                <p class="file-name">{{editBookForm.controls.newCover.value}}</p>
+                <p class="file-name">{{editBookForm!.controls.newCover.value}}</p>
             </div>
             <div class="btns">
                 <button class="btn waves-effect waves-light light-blue accent-4 center-align" type="submit"
                     name="action">EDIT</button>
-                <button class="btn waves-effect waves-light red accent-3 center-align" type="button"
-                    name="action" (click)='toggleEditForm.emit(false)' routerLink='/account'>CANCEL</button>
+                <button class="btn waves-effect waves-light red accent-3 center-align" type="button" name="action"
+                    (click)='toggleEditForm.emit(false)' routerLink='/account'>CANCEL</button>
             </div>
         </form>
     </div>

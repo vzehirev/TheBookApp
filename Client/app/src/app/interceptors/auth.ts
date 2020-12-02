@@ -1,23 +1,27 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { Endpoints } from '../endpoints';
+import { catchError } from 'rxjs/operators';
+import { ModalService } from '../services/modal/modal.service';
 import { UsersService } from '../services/users/users.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(private usersService: UsersService) { }
+    constructor(private usersService: UsersService, private router: Router, private modalService: ModalService) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.url.includes(Endpoints.Register)
-            || req.url.includes(Endpoints.Login)
-            || !this.usersService.isUserLoggedIn) {
-            return next.handle(req);
-        } else if (this.usersService.isJwtExpired && this.usersService.isUserLoggedIn) {
-            this.usersService.refreshJwt()
-            return next.handle(this.setAuthHeader(req));
+        if (this.usersService.isUserLoggedIn) {
+            req = this.setAuthHeader(req);
         }
-        return next.handle(req);
+
+        return next.handle(req).pipe(catchError(error => {
+            if ([401, 403].includes(error.status)) {
+                this.usersService.logoutUser();
+                this.router.navigate(['/login']);
+            }
+            return throwError(error);
+        }));
     }
 
     private setAuthHeader(req: HttpRequest<any>): HttpRequest<any> {

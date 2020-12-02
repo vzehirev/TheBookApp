@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [GuestGuard] },
   { path: 'login', component: LoginComponent, canActivate: [GuestGuard] },
   { path: 'books', component: BooksComponent },
-  { path: 'details', component: BookDetailsComponent },
+  { path: 'details/:id', component: BookDetailsComponent },
   { path: 'add', component: AddBookComponent, canActivate: [AuthGuard] },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent }

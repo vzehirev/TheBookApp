@@ -24,3 +24,11 @@ i:hover {
 .collection .collection-item.avatar .secondary-content.r-50 {
     right: 50px;
 }
+
+.circle {
+    object-fit: cover;
+}
+
+a {
+    cursor: pointer;
+}

@@ -13,6 +13,7 @@ using System.Text;
 using TheBookApp.Db;
 using TheBookApp.Db.Models;
 using TheBookApp.Db.Seeders;
+using TheBookApp.Services;
 
 namespace TheBookApp
 {
@@ -55,6 +56,8 @@ namespace TheBookApp
             });
 
             services.AddControllers();
+
+            services.AddTransient<ImagesService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager)
