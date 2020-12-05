@@ -1,3 +1,16 @@
 <div class="row">
-    <app-book-card class="col s4" *ngFor='let book of books | async' [book]='book'></app-book-card>
+    <h4 *ngIf='books && books.length === 0 else orderBy'>No books available. <a routerLink='/add'>Add the first
+            one.</a>
+    </h4>
+
+    <ng-template #orderBy>
+        <div class="order-by">
+            <label>ORDER BY</label>
+            <select class="browser-default" [(ngModel)]='selectedOrderBy' (change)='orderBooks()'>
+                <option *ngFor='let order of orders' value='{{order.value}}'>{{order.name}}</option>
+            </select>
+        </div>
+    </ng-template>
+
+    <app-book-card class="col s4" *ngFor='let book of books' [book]='book'></app-book-card>
 </div>

@@ -6,6 +6,8 @@
                 <span class="card-title">{{book!.title}}</span>
             </div>
             <div class="card-content">
+                <p><span class="upvotes">{{book!.upvotes}} &#8679;</span> <span class="downvotes">{{book!.downvotes}} &#8681;</span></p>
+                <p class="year">YEAR: {{book!.year}}</p>
                 <p>{{book!.description.substring(0, 75)}}...</p>
             </div>
             <hr />

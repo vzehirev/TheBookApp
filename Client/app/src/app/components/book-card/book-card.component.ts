@@ -6,12 +6,6 @@ import { IBook } from 'src/app/interfaces/i-book';
   templateUrl: './book-card.component.html',
   styleUrls: ['./book-card.component.css']
 })
-export class BookCardComponent implements OnInit {
+export class BookCardComponent {
   @Input() book?: IBook;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

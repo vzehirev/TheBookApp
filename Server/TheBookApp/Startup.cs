@@ -60,7 +60,9 @@ namespace TheBookApp
             services.AddTransient<ImagesService>();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            AppDbContext dbContext,
+            RoleManager<IdentityRole> roleManager)
         {
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
@@ -81,6 +83,7 @@ namespace TheBookApp
                 endpoints.MapControllers();
             });
 
+            dbContext.Database.Migrate();
             new RolesSeeder(roleManager).Seed();
         }
     }

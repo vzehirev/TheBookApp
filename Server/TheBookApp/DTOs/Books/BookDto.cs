@@ -14,5 +14,11 @@ namespace TheBookApp.DTOs.Books
         public string Description { get; set; }
 
         public string CoverUrl { get; set; }
+
+        public int Upvotes { get; set; }
+
+        public int Downvotes { get; set; }
+
+        public int Year { get; set; }
     }
 }

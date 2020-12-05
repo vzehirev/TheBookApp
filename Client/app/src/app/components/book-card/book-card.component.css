@@ -43,3 +43,22 @@ hr {
     height: 250px;
     object-fit: cover;
 }
+
+.upvotes, .downvotes {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: .5rem;
+}
+
+.upvotes {
+    color: limegreen;
+}
+
+.downvotes {
+    color: tomato;
+}
+
+.year{
+    font-weight: bold;
+    font-style: italic;
+}

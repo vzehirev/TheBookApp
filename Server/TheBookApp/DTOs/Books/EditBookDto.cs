@@ -14,6 +14,9 @@ namespace TheBookApp.DTOs.Books
         [Required, MinLength(10), MaxLength(1000)]
         public string Description { get; set; }
 
+        [Required]
+        public int Year { get; set; }
+
         public IFormFile NewCover { get; set; }
     }
 }

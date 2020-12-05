@@ -11,13 +11,13 @@ import { BooksService } from 'src/app/services/books/books.service';
 export class MyBooksComponent implements OnInit {
   showEdit: boolean = false;
   @Output() bookForEdit?: IBook;
-  myBooks: IBook[] = [];
+  myBooks!: IBook[];
 
   constructor(private booksService: BooksService) {
-    this.booksService.getMyBooks().subscribe(res => this.myBooks = res);
   }
 
   ngOnInit(): void {
+    this.booksService.getMyBooks().subscribe(res => this.myBooks = res);
   }
 
   editBook(id: number) {
@@ -25,7 +25,7 @@ export class MyBooksComponent implements OnInit {
     this.bookForEdit = this.myBooks.find(b => b.id === id);
   }
 
-  toggleEditForm(event: any) {
+  showEditForm(event: any) {
     this.showEdit = event;
     this.booksService.getMyBooks().subscribe(res => this.myBooks = res);
   }

@@ -18,6 +18,15 @@
                 Description must be between 10 and 1000 characters.
             </p>
         </div>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">date_range
+            </i>
+            <input id="year" type="number" formControlName='year'>
+            <label for="year">Year</label>
+            <p class="danger" *ngIf='addBookForm.controls.year.touched && addBookForm.controls.year.errors'>
+                Year is a required field (ex. 1992).
+            </p>
+        </div>
         <div class="col s12 center-align">
             <label class="cover-label" for="cover">UPLOAD COVER <i class="material-icons prefix">add_a_photo</i></label>
             <input type="file" id="cover" accept="image/*" hidden (change)="fileInputHandler($event.target)">

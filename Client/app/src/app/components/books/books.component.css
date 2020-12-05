@@ -1,9 +1,16 @@
-@media all and (max-width: 750px) {
-    .col.s4 {
-        width: auto;
-    }
-}
-
 .row{
     margin:2rem;
+}
+
+.order-by{
+    max-width: 300px;
+    margin: 30px auto;
+    text-align: center;
+    font-weight: bold;
+}
+
+ @media all and (max-width: 750px) {
+    .col.s4 {
+    width: auto;
+    }
 }

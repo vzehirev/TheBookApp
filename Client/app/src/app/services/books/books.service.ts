@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Endpoints } from 'src/app/endpoints';
 import { IBook } from 'src/app/interfaces/i-book';
-import { BookDetailsModel } from 'src/app/models/books/book-details-model';
+import { IVoteResponse } from 'src/app/interfaces/i-vote-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class BooksService {
   }
 
   getBookById(id: number) {
-    return this.httpClient.get<BookDetailsModel>(Endpoints.GetBook + `/${id}`);
+    return this.httpClient.get<IBook>(Endpoints.GetBook + `/${id}`);
   }
 
   getMyBooks(): Observable<IBook[]> {
@@ -33,5 +33,13 @@ export class BooksService {
 
   updateBook(inputModel: FormData) {
     return this.httpClient.put(Endpoints.EditBook, inputModel);
+  }
+
+  upvote(bookId: number): Observable<IVoteResponse> {
+    return this.httpClient.post<IVoteResponse>(Endpoints.VoteBook + `/${bookId}/true`, {});
+  }
+
+  downvote(bookId: number): Observable<IVoteResponse> {
+    return this.httpClient.post<IVoteResponse>(Endpoints.VoteBook + `/${bookId}/false`, {});
   }
 }

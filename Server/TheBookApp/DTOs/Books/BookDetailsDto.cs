@@ -1,4 +1,6 @@
-﻿namespace TheBookApp.DTOs.Books
+﻿using System;
+
+namespace TheBookApp.DTOs.Books
 {
     public class BookDetailsDto
     {
@@ -13,5 +15,9 @@
         public int Upvotes { get; set; }
 
         public int Downvotes { get; set; }
+
+        public int Year { get; set; }
+
+        public bool UserAlreadyVoted { get; set; }
     }
 }

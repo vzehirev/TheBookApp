@@ -11,12 +11,6 @@ import { UsersService } from 'src/app/services/users/users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-
-  constructor(private formBuilder: FormBuilder,
-    private modalService: ModalService,
-    private usersService: UsersService,
-    private router: Router) { }
-
   forgottenPassword: boolean = false;
 
   loginForm: FormGroup = this.formBuilder.group({
@@ -28,24 +22,27 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]]
   });
 
-  loginFormSubmit() {
+  constructor(private formBuilder: FormBuilder,
+    private modalService: ModalService,
+    private usersService: UsersService,
+    private router: Router) { }
+
+  loginFormSubmit(): void {
     if (this.loginForm.invalid) {
       this.modalService.openModal('Please correctly fill in the fields.');
-      return;
+    } else {
+      let inputModel = new LoginUserModel(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
+      this.usersService.loginUser(inputModel).subscribe(res => this.usersService.persistSession(res));
+
+      this.router.navigate(['/']);
     }
-
-    let inputModel = new LoginUserModel(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
-    this.usersService.loginUser(inputModel).subscribe(res => this.usersService.persistSession(res));
-
-    this.router.navigate(['/']);
   }
 
-  resetPasswordFormSubmit() {
+  resetPasswordFormSubmit(): void {
     if (this.resetPasswordForm.invalid) {
       this.modalService.openModal('Please correctly fill in your e-mail.');
-      return;
+    } else {
+      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value);
     }
-
-    this.usersService.resetPassword(this.resetPasswordForm.controls.email.value);
   }
 }

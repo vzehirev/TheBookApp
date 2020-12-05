@@ -111,6 +111,11 @@ i {
     color: tomato
 }
 
+.year {
+    font-weight: bold;
+    font-style: italic;
+}
+
 @media all and (max-width:770px) {
     .col.s12 {
         flex-direction: column;

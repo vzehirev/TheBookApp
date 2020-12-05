@@ -12,7 +12,7 @@ import { BooksComponent } from './components/books/books.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { BookCardComponent } from './components/book-card/book-card.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalComponent } from './components/modal/modal.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { AccountComponent } from './components/account/account.component';
@@ -46,7 +46,8 @@ import { ErrorInterceptor } from './interceptors/error';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -12,6 +12,9 @@ namespace TheBookApp.DTOs.Books
         public string Description { get; set; }
 
         [Required]
+        public int Year { get; set; }
+
+        [Required]
         public IFormFile Cover { get; set; }
     }
 }

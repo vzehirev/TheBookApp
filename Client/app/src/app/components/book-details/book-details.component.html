@@ -1,14 +1,15 @@
 <section class="book-details" *ngIf='book'>
   <h3>{{book!.title}}</h3>
   <img src="{{book!.coverUrl}}" />
+  <p class="year">YEAR: {{book!.year}}</p>
   <div class="rating">
-    <div class="tup">
+    <div class="tup" (click)='upvote()'>
       <i class="material-icons prefix">thumb_up</i>
-      <span>1</span>
+      <span>{{book!.upvotes}}</span>
     </div>
-    <div class="tdown">
+    <div class="tdown" (click)='downvote()'>
       <i class="material-icons prefix">thumb_down</i>
-      <span>5</span>
+      <span>{{book!.downvotes}}</span>
     </div>
   </div>
   <div class="description">

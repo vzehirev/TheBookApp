@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using TheBookApp.Db;
 using TheBookApp.Db.Models;
 using TheBookApp.DTOs.Books;
+using TheBookApp.DTOs.Ratings;
 using TheBookApp.Services;
 
 namespace TheBookApp.Controllers
@@ -37,7 +39,10 @@ namespace TheBookApp.Controllers
                     Id = b.Id,
                     Title = b.Title,
                     Description = b.Description,
-                    CoverUrl = b.CoverUrl
+                    CoverUrl = b.CoverUrl,
+                    Year = b.Year,
+                    Upvotes = b.Ratings.Count(r => r.IsUp),
+                    Downvotes = b.Ratings.Count(r => !r.IsUp)
                 })
                 .ToArrayAsync();
         }
@@ -53,8 +58,9 @@ namespace TheBookApp.Controllers
                     Title = b.Title,
                     Description = b.Description,
                     CoverUrl = b.CoverUrl,
+                    Year = b.Year,
                     Upvotes = b.Ratings.Count(r => r.IsUp),
-                    Downvotes = b.Ratings.Count(r => !r.IsUp),
+                    Downvotes = b.Ratings.Count(r => !r.IsUp)
                 })
                 .SingleOrDefaultAsync();
 
@@ -78,7 +84,8 @@ namespace TheBookApp.Controllers
                     Id = b.Id,
                     Title = b.Title,
                     Description = b.Description,
-                    CoverUrl = b.CoverUrl
+                    CoverUrl = b.CoverUrl,
+                    Year = b.Year
                 })
                 .ToArrayAsync();
         }
@@ -97,7 +104,8 @@ namespace TheBookApp.Controllers
             {
                 UserId = user.Id,
                 Title = inputModel.Title,
-                Description = inputModel.Description
+                Description = inputModel.Description,
+                Year = inputModel.Year
             };
 
             using (Stream imageFileStream = inputModel.Cover.OpenReadStream())
@@ -157,6 +165,7 @@ namespace TheBookApp.Controllers
 
             book.Title = inputModel.Title;
             book.Description = inputModel.Description;
+            book.Year = inputModel.Year;
 
             if (inputModel.NewCover != null)
             {
@@ -172,11 +181,10 @@ namespace TheBookApp.Controllers
             return Ok();
         }
 
-        [Authorize, HttpPost("{id}"), Route("vote")]
+        [Authorize, HttpPost(), Route("vote/{id}/{isUp}")]
         public async Task<IActionResult> Vote(int id, bool isUp)
         {
             var book = await dbContext.Books.FindAsync(id);
-
             if (book == null)
             {
                 return NotFound();
@@ -210,7 +218,16 @@ namespace TheBookApp.Controllers
 
             await dbContext.SaveChangesAsync();
 
-            return Ok();
+            var res = await dbContext.Books
+                .Where(b => b.Id == book.Id)
+                .Select(b => new VotesResponseDto
+                {
+                    Upvotes = b.Ratings.Where(r => r.IsUp).Count(),
+                    Downvotes = b.Ratings.Where(r => !r.IsUp).Count()
+                })
+                .FirstOrDefaultAsync();
+
+            return Ok(res);
         }
     }
 }

@@ -8,4 +8,4 @@
                 class="material-icons danger">delete_forever</i></a>
     </li>
 </ul>
-<app-edit-book *ngIf='showEdit' (toggleEditForm)='toggleEditForm($event)' [book]='bookForEdit'></app-edit-book>
+<app-edit-book *ngIf='showEdit' (showEditForm)='showEditForm($event)' [book]='bookForEdit'></app-edit-book>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TheBookApp.Db.Models
@@ -20,6 +21,9 @@ namespace TheBookApp.Db.Models
 
         [Required]
         public string CoverUrl { get; set; }
+
+        [Required]
+        public int Year { get; set; }
 
         public IEnumerable<Rating> Ratings { get; set; }
     }
