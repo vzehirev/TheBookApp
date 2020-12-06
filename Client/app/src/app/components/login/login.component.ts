@@ -15,7 +15,7 @@ export class LoginComponent {
 
   loginForm: FormGroup = this.formBuilder.group({
     username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
-    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]],
   });
 
   resetPasswordForm: FormGroup = this.formBuilder.group({
@@ -42,7 +42,7 @@ export class LoginComponent {
     if (this.resetPasswordForm.invalid) {
       this.modalService.openModal('Please correctly fill in your e-mail.');
     } else {
-      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value);
+      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(()=>this.modalService.openModal('New password was sent to your e-mail.'));
     }
   }
 }

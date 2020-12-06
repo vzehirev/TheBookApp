@@ -7,7 +7,7 @@ namespace TheBookApp.DTOs.Users
         [Required, MinLength(4), MaxLength(20)]
         public string Username { get; set; }
 
-        [Required, MinLength(6), MaxLength(20)]
+        [Required, MinLength(6), MaxLength(50)]
         public string Password { get; set; }
     }
 }

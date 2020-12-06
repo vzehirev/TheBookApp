@@ -1,10 +1,18 @@
 <h5 class="center-align">MANAGE ACCOUNT</h5>
 <div class="row">
-    <form class="col s4" [formGroup]='accDetailsForm' (ngSubmit)='accDetailsFormSubmit()'>
+    <form class="col s4" *ngIf='accDetailsForm' [formGroup]='accDetailsForm' (ngSubmit)='accDetailsFormSubmit()'>
+        <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="current-password" type="password" autocomplete="on"
+                formControlName='currentPassword'>
+            <label for="current-password">Current password</label>
+            <p class="danger" *ngIf='accDetailsForm.controls.currentPassword.touched && accDetailsForm.controls.currentPassword.errors'>
+                Current password must be between 6 and 50 characters.
+            </p>
+        </div>
         <div class="input-field col s12">
             <i class="material-icons prefix">account_box</i>
             <input id="username" type="text" formControlName='username'>
-            <label for="username">Username</label>
             <p class="danger" *ngIf='accDetailsForm.controls.username.touched && accDetailsForm.controls.username.errors'>
                 Username must be between 4 and 20 characters.
             </p>
@@ -12,7 +20,6 @@
         <div class="input-field col s12">
             <i class="material-icons prefix">email</i>
             <input id="email" type="email" formControlName='email'>
-            <label for="email">E-mail</label>
             <p class="danger" *ngIf='accDetailsForm.controls.email.touched && accDetailsForm.controls.email.errors'>
                 E-mail is not valid.
             </p>
@@ -22,7 +29,7 @@
             <input id="new-password" type="password" autocomplete="on" formControlName='newPassword'>
             <label for="new-password">New password</label>
             <p class="danger" *ngIf='accDetailsForm.controls.newPassword.touched && accDetailsForm.controls.newPassword.errors'>
-                Password must be between 6 and 20 characters.
+                Password must be between 6 and 50 characters.
             </p>
         </div>
         <div class="input-field col s12">

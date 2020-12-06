@@ -1,4 +1,6 @@
 <h5 class="center-align">MY BOOKS</h5>
+<h6 class="center-align" *ngIf='myBooks && myBooks.length===0'>You haven't added any books yet. <a routerLink='/add'>Add
+        your first one.</a></h6>
 <ul class="collection">
     <li class="collection-item avatar" *ngFor="let book of myBooks">
         <img src="{{book.coverUrl}}" alt="" class="circle">

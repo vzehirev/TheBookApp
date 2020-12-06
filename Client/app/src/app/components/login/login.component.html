@@ -14,7 +14,7 @@
             <input id="password" type="password" autocomplete="on" formControlName='password'>
             <label for="password">Password</label>
             <p *ngIf='loginForm.controls.password.touched && loginForm.controls.password.errors'>
-                Password must be between 6 and 20 characters.
+                Password must be between 6 and 50 characters.
             </p>
         </div>
         <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">LOGIN</button>

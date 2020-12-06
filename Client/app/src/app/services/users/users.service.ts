@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Endpoints } from 'src/app/endpoints';
-import { RegisterUserModel } from 'src/app/models/users/register-user-model';
 import { HttpClient } from '@angular/common/http';
 import { LoginUserModel } from 'src/app/models/users/login-user-model';
 import { IJwtResponse } from 'src/app/interfaces/i-jwt-response';
 import { Observable } from 'rxjs';
+import { IUserDetails } from 'src/app/interfaces/i-user-details';
+import { UpdateUserModel } from 'src/app/models/users/update-user-model';
+import { RegisterUserModel } from 'src/app/models/users/register-user-model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +26,8 @@ export class UsersService {
     return this.httpClient.post<IJwtResponse>(Endpoints.RefreshJwt, {});
   }
 
-  resetPassword(email: string): void {
-    console.log('Resetting password...');
+  resetPassword(email: string): Observable<any> {
+    return this.httpClient.post(Endpoints.ResetPass + `/${email}`, {});
   }
 
   persistSession(jwtResponse: IJwtResponse): void {
@@ -48,14 +50,11 @@ export class UsersService {
     localStorage.removeItem('username');
   }
 
-  get isJwtExpired(): boolean {
-    if (this.isUserLoggedIn) {
-      let jwt = localStorage.getItem('jwt') ?? '';
-      let jwtExpiry = (JSON.parse(atob(jwt.split('.')[1]))).exp;
-      let nowPlusOneMinute = (Math.floor(((new Date).getTime() + 1 * 60000) / 1000));
+  getUserDetails(): Observable<IUserDetails> {
+    return this.httpClient.get<IUserDetails>(Endpoints.UserDetails);
+  }
 
-      return nowPlusOneMinute >= jwtExpiry;
-    }
-    return true;
+  updateUserAccount(inputModel: UpdateUserModel) {
+    return this.httpClient.post(Endpoints.UpdateUser, inputModel);
   }
 }

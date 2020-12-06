@@ -5,6 +5,9 @@ export class Endpoints {
     static Register = `${Endpoints.Auth}/register`;
     static Login = `${Endpoints.Auth}/login`;
     static RefreshJwt = `${Endpoints.Auth}/refreshJwt`;
+    static ResetPass = `${Endpoints.Auth}/reset-password`;
+    static UserDetails = `${Endpoints.Auth}/user-details`;
+    static UpdateUser = `${Endpoints.Auth}/update-user`;
 
     static Books = `${Endpoints.Server}/books`;
     static AllBooks = Endpoints.Books;

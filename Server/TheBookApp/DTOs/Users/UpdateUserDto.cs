@@ -2,18 +2,19 @@
 
 namespace TheBookApp.DTOs.Users
 {
-    public class RegisterUserDto
+    public class UpdateUserDto
     {
+        [Required, MinLength(6), MaxLength(50)]
+        public string CurrentPassword { get; set; }
+
         [Required, MinLength(4), MaxLength(20)]
         public string Username { get; set; }
 
         [Required, EmailAddress]
         public string Email { get; set; }
 
-        [Required, MinLength(6), MaxLength(50)]
         public string Password { get; set; }
 
-        [Required, MinLength(6), MaxLength(50)]
         public string ConfirmPassword { get; set; }
     }
 }

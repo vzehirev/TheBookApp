@@ -33,7 +33,16 @@ namespace TheBookApp
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>(options => options.ClaimsIdentity.UserIdClaimType = "id")
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.ClaimsIdentity.UserIdClaimType = "id";
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+            })
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddAuthentication(options =>
@@ -58,11 +67,14 @@ namespace TheBookApp
             services.AddControllers();
 
             services.AddTransient<ImagesService>();
+            services.AddTransient<EmailsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             AppDbContext dbContext,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration,
+            UserManager<User>userManager)
         {
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
@@ -85,6 +97,7 @@ namespace TheBookApp
 
             dbContext.Database.Migrate();
             new RolesSeeder(roleManager).Seed();
+            new AdminSeeder(configuration, userManager).AddAdmin();
         }
     }
 }
