@@ -17,4 +17,5 @@ export class Endpoints {
     static EditBook = `${Endpoints.Books}/edit`;
     static DeleteBook = Endpoints.Books;
     static VoteBook = `${Endpoints.Books}/vote`;
+    static Review = `${Endpoints.Books}/review`;
 }

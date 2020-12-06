@@ -11,6 +11,7 @@ using TheBookApp.Db;
 using TheBookApp.Db.Models;
 using TheBookApp.DTOs.Books;
 using TheBookApp.DTOs.Ratings;
+using TheBookApp.DTOs.Books;
 using TheBookApp.Services;
 
 namespace TheBookApp.Controllers
@@ -59,7 +60,13 @@ namespace TheBookApp.Controllers
                     CoverUrl = b.CoverUrl,
                     Year = b.Year,
                     Upvotes = b.Ratings.Count(r => r.IsUp),
-                    Downvotes = b.Ratings.Count(r => !r.IsUp)
+                    Downvotes = b.Ratings.Count(r => !r.IsUp),
+                    Reviews = b.Reviews.Select(r => new ReviewDto
+                    {
+                        Text = r.Text,
+                        Author = r.User.UserName,
+                        DateTime = r.DateTime
+                    })
                 })
                 .SingleOrDefaultAsync();
 
@@ -180,7 +187,30 @@ namespace TheBookApp.Controllers
             return Ok();
         }
 
-        [Authorize, HttpPost(), Route("vote/{id}/{isUp}")]
+        [Authorize, HttpPost, Route("review")]
+        public async Task<ActionResult<ReviewDto>> ReviewAsync(AddReviewDto inputModel)
+        {
+            var user = await userManager.GetUserAsync(User);
+
+            var review = new Review
+            {
+                UserId = user.Id,
+                BookId = inputModel.BookId,
+                Text = inputModel.Review
+            };
+
+            dbContext.Reviews.Add(review);
+            await dbContext.SaveChangesAsync();
+
+            return new ReviewDto
+            {
+                Text = review.Text,
+                Author = user.UserName,
+                DateTime = review.DateTime
+            };
+        }
+
+        [Authorize, HttpPost, Route("vote/{id}/{isUp}")]
         public async Task<IActionResult> Vote(int id, bool isUp)
         {
             var book = await dbContext.Books.FindAsync(id);

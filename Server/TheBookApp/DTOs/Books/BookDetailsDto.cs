@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TheBookApp.DTOs.Books
 {
@@ -18,6 +19,6 @@ namespace TheBookApp.DTOs.Books
 
         public int Year { get; set; }
 
-        public bool UserAlreadyVoted { get; set; }
+        public IEnumerable<ReviewDto> Reviews { get; set; }
     }
 }

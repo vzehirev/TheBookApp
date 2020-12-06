@@ -24,19 +24,24 @@
     <div class="row leave-review">
       <div class="col s12">
         <div class="row w-75 m-0">
-          <div class="input-field col s12">
-            <textarea id="textarea1" class="materialize-textarea"></textarea>
-            <label for="textarea1">ADD REVIEW</label>
-          </div>
+          <form [formGroup]='addReviewForm' (ngSubmit)='addReview()'>
+            <div class="input-field col s12">
+              <textarea id="review" class="materialize-textarea" formControlName='review'></textarea>
+              <label for="review">ADD REVIEW</label>
+              <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">ADD</button>
+            </div>
+            <p class="danger" *ngIf='addReviewForm.controls.review.touched && addReviewForm.controls.review.errors'>
+              Review should be between 5 and 1000 characters long.
+            </p>
+          </form>
         </div>
-        <button class="btn waves-effect waves-light light-blue accent-4" type="submit" name="action">ADD</button>
       </div>
     </div>
-    <div class="review">
-      <p>
-        ipsam aut est ullam, quaerat et atque dolores commodi blanditiis iusto similique corporis soluta quidem.
-      </p>
-      <p class="review-details">20.10.2020 by Author</p>
-    </div>
+      <div class="review" *ngFor='let review of book!.reviews'>
+        <p>
+          {{review.text}}
+        </p>
+        <p class="review-details">{{review.dateTime | date}} by {{review.author}}</p>
+      </div>
   </div>
 </section>

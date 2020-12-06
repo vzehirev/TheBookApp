@@ -8,5 +8,7 @@ namespace TheBookApp.Db.Models
         public IEnumerable<Book> Books { get; set; }
 
         public IEnumerable<Rating> Ratings { get; set; }
+
+        public IEnumerable<Review> Reviews { get; set; }
     }
 }

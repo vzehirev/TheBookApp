@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Endpoints } from 'src/app/endpoints';
 import { IBook } from 'src/app/interfaces/i-book';
+import { IReview } from 'src/app/interfaces/i-review';
 import { IVoteResponse } from 'src/app/interfaces/i-vote-response';
+import { AddReviewModel } from 'src/app/models/books/add-review';
 
 @Injectable({
   providedIn: 'root'
@@ -41,5 +43,9 @@ export class BooksService {
 
   downvote(bookId: number): Observable<IVoteResponse> {
     return this.httpClient.post<IVoteResponse>(Endpoints.VoteBook + `/${bookId}/false`, {});
+  }
+
+  addReview(inputModel: AddReviewModel): Observable<IReview> {
+    return this.httpClient.post<IReview>(Endpoints.Review, inputModel);
   }
 }
