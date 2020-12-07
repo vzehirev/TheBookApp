@@ -16,11 +16,14 @@ import { UsersService } from 'src/app/services/users/users.service';
 export class BookDetailsComponent implements OnInit {
   book?: IBook;
   addReviewForm!: FormGroup;
-  constructor(private route: ActivatedRoute, private booksService: BooksService, private usersService: UsersService, private modalService: ModalService) { }
+  constructor(private route: ActivatedRoute, private booksService: BooksService, public usersService: UsersService, private modalService: ModalService) { }
 
   ngOnInit() {
     let bookId = this.route.snapshot.paramMap.get('id');
-    this.booksService.getBookById(+bookId!).subscribe(b => this.book = b);
+    this.booksService.getBookById(+bookId!).subscribe(b => {
+      this.book = b;
+      this.sortReviewsByDateDesc();
+    });
 
     this.addReviewForm = new FormGroup({
       review: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(1000)])
@@ -48,8 +51,25 @@ export class BookDetailsComponent implements OnInit {
       this.modalService.openModal('The review should be between 5 and 1000 characters long.');
     } else {
       let review = new AddReviewModel(this.book!.id, this.addReviewForm.controls.review.value);
-      this.booksService.addReview(review).subscribe(res => this.book!.reviews.push(res));
+      this.booksService.addReview(review).subscribe(res => {
+        this.book!.reviews.push(res);
+        this.sortReviewsByDateDesc()
+      });
     }
+  }
+
+  deleteReview(id: number) {
+    if (!this.usersService.isAdmin) {
+      this.modalService.openModal('Allowed only for admins.');
+    } else if(confirm('Confirm review deletion?')){
+      this.booksService.deleteReview(id).subscribe(() => this.book!.reviews = this.book!.reviews.filter(r => r.id !== id));
+    }
+  }
+
+  private sortReviewsByDateDesc() {
+    this.book!.reviews.sort((a, b) => {
+      return <any>new Date(b.dateTime) - <any>new Date(a.dateTime);
+    });
   }
 
   private updateRating(votes: IVoteResponse): void {

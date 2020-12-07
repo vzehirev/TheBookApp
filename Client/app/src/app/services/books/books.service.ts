@@ -48,4 +48,8 @@ export class BooksService {
   addReview(inputModel: AddReviewModel): Observable<IReview> {
     return this.httpClient.post<IReview>(Endpoints.Review, inputModel);
   }
+
+  deleteReview(id: number): Observable<any> {
+    return this.httpClient.delete(Endpoints.DeleteReview + `/${id}`);
+  }
 }

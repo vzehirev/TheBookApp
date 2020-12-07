@@ -57,4 +57,11 @@ export class UsersService {
   updateUserAccount(inputModel: UpdateUserModel) {
     return this.httpClient.post(Endpoints.UpdateUser, inputModel);
   }
+
+  get isAdmin(): boolean {
+    if (this.isUserLoggedIn) {
+      return (JSON.parse(atob(localStorage.getItem('jwt')!.split('.')[1]))).roles?.includes('Admin') ?? false;
+    }
+    return false;
+  }
 }

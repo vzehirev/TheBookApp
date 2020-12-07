@@ -11,7 +11,6 @@ using TheBookApp.Db;
 using TheBookApp.Db.Models;
 using TheBookApp.DTOs.Books;
 using TheBookApp.DTOs.Ratings;
-using TheBookApp.DTOs.Books;
 using TheBookApp.Services;
 
 namespace TheBookApp.Controllers
@@ -63,6 +62,7 @@ namespace TheBookApp.Controllers
                     Downvotes = b.Ratings.Count(r => !r.IsUp),
                     Reviews = b.Reviews.Select(r => new ReviewDto
                     {
+                        Id = r.Id,
                         Text = r.Text,
                         Author = r.User.UserName,
                         DateTime = r.DateTime
@@ -81,11 +81,25 @@ namespace TheBookApp.Controllers
         [Authorize, HttpGet, Route("my-books")]
         public async Task<ActionResult<BookDto[]>> MyBooks()
         {
-            var userId = userManager.GetUserId(User);
+            var user = await userManager.GetUserAsync(User);
+
+            if (await userManager.IsInRoleAsync(user, Roles.Admin.ToString()))
+            {
+                return await dbContext.Books
+                    .Select(b => new BookDto
+                    {
+                        Id = b.Id,
+                        Title = b.Title,
+                        Description = b.Description,
+                        CoverUrl = b.CoverUrl,
+                        Year = b.Year
+                    })
+                    .ToArrayAsync();
+            }
 
             return await dbContext.Books
-                .Where(b => b.UserId == userId).
-                Select(b => new BookDto
+                .Where(b => b.UserId == user.Id)
+                .Select(b => new BookDto
                 {
                     Id = b.Id,
                     Title = b.Title,
@@ -135,9 +149,9 @@ namespace TheBookApp.Controllers
                 return NotFound();
             }
 
-            var userId = userManager.GetUserId(User);
+            var user = await userManager.GetUserAsync(User);
 
-            if (book.UserId != userId)
+            if (book.UserId != user.Id && !await userManager.IsInRoleAsync(user, Roles.Admin.ToString()))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
@@ -163,11 +177,12 @@ namespace TheBookApp.Controllers
                 return NotFound();
             }
 
-            if (book.UserId != userManager.GetUserId(User))
+            var user = await userManager.GetUserAsync(User);
+
+            if (book.UserId != user.Id && !await userManager.IsInRoleAsync(user, Roles.Admin.ToString()))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
-
 
             book.Title = inputModel.Title;
             book.Description = inputModel.Description;
@@ -257,6 +272,22 @@ namespace TheBookApp.Controllers
                 .FirstOrDefaultAsync();
 
             return Ok(res);
+        }
+
+        [Authorize(Roles = "Admin"), HttpDelete, Route("delete-review/{id}")]
+        public async Task<IActionResult> DeleteReviewAsync(int id)
+        {
+            var review = await dbContext.Reviews.FindAsync(id);
+
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            dbContext.Reviews.Remove(review);
+            await dbContext.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

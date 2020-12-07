@@ -38,6 +38,7 @@
       </div>
     </div>
       <div class="review" *ngFor='let review of book!.reviews'>
+        <span class="delete-review" *ngIf='usersService.isAdmin' (click)='deleteReview(review.id)'>X</span>
         <p>
           {{review.text}}
         </p>

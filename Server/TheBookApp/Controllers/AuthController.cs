@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -77,7 +78,7 @@ namespace TheBookApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var jwt = GenerateJwt(user.Id, user.UserName);
+            var jwt = await GenerateJwt(user);
 
             return Ok(new { jwt });
         }
@@ -154,8 +155,20 @@ namespace TheBookApp.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        private string GenerateJwt(string userId, string username)
+        private async Task<string> GenerateJwt(User user)
         {
+            var userClaims = new List<Claim>
+            {
+                    new Claim("id", user.Id),
+                    new Claim("username", user.UserName)
+            };
+
+            var userRoles = await userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                userClaims.Add(new Claim("roles", role));
+            }
+
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
             var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
             var jwtToken = new JwtSecurityToken(
@@ -163,11 +176,7 @@ namespace TheBookApp.Controllers
                 audience: configuration["JWT:Audience"],
                 signingCredentials: signingCredentials,
                 expires: DateTime.UtcNow.AddDays(double.Parse(configuration["JWT:DurationInDays"])),
-                claims: new Claim[]
-                {
-                    new Claim("id", userId),
-                    new Claim("username", username)
-                });
+                claims: userClaims);
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
