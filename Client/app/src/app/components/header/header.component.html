@@ -14,6 +14,7 @@
         </ng-container>
 
         <ng-container *ngIf='usersService.isUserLoggedIn'>
+          <li><a routerLink="/add" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">ADD BOOK</a></li>
           <li><a routerLink="/account" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">ACCOUNT
               ({{usersService.username}})</a>
           </li>
@@ -39,6 +40,8 @@
     </ng-container>
 
     <ng-container *ngIf='usersService.isUserLoggedIn'>
+      <li class="sidenav-close"><a routerLink="/add" routerLinkActive="mobile-active"
+          [routerLinkActiveOptions]="{exact: true}">ADD BOOK</a></li>
       <li class="sidenav-close"><a routerLink="/account" routerLinkActive="mobile-active"
           [routerLinkActiveOptions]="{exact: true}">ACCOUNT ({{usersService.username}})</a></li>
       <li class="sidenav-close"><a (click)='logout()'>LOGOUT</a></li>
