@@ -73,6 +73,11 @@ namespace TheBookApp.Controllers
 
             var user = await userManager.FindByNameAsync(inputModel.Username);
 
+            if (user == null)
+            {
+                user = await userManager.FindByEmailAsync(inputModel.Username);
+            }
+
             if (user == null || !await userManager.CheckPasswordAsync(user, inputModel.Password))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);

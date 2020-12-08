@@ -43,7 +43,10 @@ export class LoginComponent {
     if (this.resetPasswordForm.invalid) {
       this.modalService.openModal('Please correctly fill in your e-mail.');
     } else {
-      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(() => this.modalService.openModal('New password was sent to your e-mail.'));
+      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(() => {
+        this.forgottenPassword = false;
+        this.modalService.openModal('New password was sent to your e-mail.');
+      });
     }
   }
 }
