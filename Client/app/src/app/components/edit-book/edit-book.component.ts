@@ -31,20 +31,20 @@ export class EditBookComponent implements OnInit {
     this.editBookForm!.controls.newCover.setValue(this.newCover.name);
   }
 
-  editBookFormSubmit() {
+  editBookFormSubmit(): void {
     if (this.editBookForm!.invalid) {
       this.modalService.openModal("Please correctly fill in the fields.")
-    }
+    } else {
+      let formData = new FormData();
+      formData.append('id', this.book!.id.toString());
+      formData.append('title', this.editBookForm!.controls.title.value);
+      formData.append('description', this.editBookForm!.controls.description.value);
+      formData.append('year', this.editBookForm!.controls.year.value);
+      if (this.newCover !== null) {
+        formData.append('newCover', this.newCover);
+      }
 
-    let formData = new FormData();
-    formData.append('id', this.book!.id.toString());
-    formData.append('title', this.editBookForm!.controls.title.value);
-    formData.append('description', this.editBookForm!.controls.description.value);
-    formData.append('year', this.editBookForm!.controls.year.value);
-    if (this.newCover !== null) {
-      formData.append('newCover', this.newCover);
+      this.booksService.updateBook(formData).subscribe(() => this.showEditForm.next(false));
     }
-
-    this.booksService.updateBook(formData).subscribe(() => this.showEditForm.next(false));
   }
 }

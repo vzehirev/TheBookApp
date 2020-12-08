@@ -13,7 +13,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             if ([401, 403].includes(error.status)) {
                 this.modalService.openModal('Please login and try again.')
             } else {
-                this.modalService.openModal('Sorry, something went wrong. Please try again.')
+                this.modalService.openModal('Sorry, server responded with error. Please, try again.')
             }
             return throwError(error);
         }));

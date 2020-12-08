@@ -36,7 +36,7 @@ namespace TheBookApp.Db.Migrations
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Ratings_AspNetUsers_UserId",
                         column: x => x.UserId,

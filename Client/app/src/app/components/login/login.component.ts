@@ -29,12 +29,13 @@ export class LoginComponent {
 
   loginFormSubmit(): void {
     if (this.loginForm.invalid) {
-      this.modalService.openModal('Please correctly fill in the fields.');
+      this.modalService.openModal('Please correctly fill in all of the fields.');
     } else {
       let inputModel = new LoginUserModel(this.loginForm.controls.username.value, this.loginForm.controls.password.value);
-      this.usersService.loginUser(inputModel).subscribe(res => this.usersService.persistSession(res));
-
-      this.router.navigate(['/']);
+      this.usersService.loginUser(inputModel).subscribe(res => {
+        this.usersService.persistSession(res);
+        this.router.navigate(['/account']);
+      });
     }
   }
 
@@ -42,7 +43,7 @@ export class LoginComponent {
     if (this.resetPasswordForm.invalid) {
       this.modalService.openModal('Please correctly fill in your e-mail.');
     } else {
-      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(()=>this.modalService.openModal('New password was sent to your e-mail.'));
+      this.usersService.resetPassword(this.resetPasswordForm.controls.email.value).subscribe(() => this.modalService.openModal('New password was sent to your e-mail.'));
     }
   }
 }

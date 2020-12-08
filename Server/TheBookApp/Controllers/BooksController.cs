@@ -113,7 +113,9 @@ namespace TheBookApp.Controllers
         [Authorize, HttpPost, Route("add")]
         public async Task<IActionResult> AddBook([FromForm] AddBookDto inputModel)
         {
-            if (!ModelState.IsValid)
+            var bookAlreadyExisting = await dbContext.Books.Where(b => b.Title == inputModel.Title).SingleOrDefaultAsync();
+
+            if (!ModelState.IsValid || bookAlreadyExisting != null)
             {
                 return StatusCode(StatusCodes.Status406NotAcceptable);
             }
@@ -219,6 +221,7 @@ namespace TheBookApp.Controllers
 
             return new ReviewDto
             {
+                Id = review.Id,
                 Text = review.Text,
                 Author = user.UserName,
                 DateTime = review.DateTime

@@ -23,16 +23,16 @@ export class AddBookComponent {
 
   addBookFormSubmit() {
     if (this.addBookForm.invalid) {
-      this.modalService.openModal("Please correctly fill in the fields and add a cover photo.")
+      this.modalService.openModal('Please correctly fill in all of the fields and add a cover photo.')
+    } else {
+      let formData = new FormData();
+      formData.append('title', this.addBookForm.controls.title.value);
+      formData.append('description', this.addBookForm.controls.description.value);
+      formData.append('year', this.addBookForm.controls.year.value);
+      formData.append('cover', this.coverFile);
+
+      this.booksService.addBook(formData).subscribe(() => this.router.navigate(['/books']));
     }
-
-    let formData = new FormData();
-    formData.append('title', this.addBookForm.controls.title.value);
-    formData.append('description', this.addBookForm.controls.description.value);
-    formData.append('year', this.addBookForm.controls.year.value);
-    formData.append('cover', this.coverFile);
-
-    this.booksService.addBook(formData).subscribe(() => this.router.navigate(['/books']));
   }
 
   fileInputHandler(fileInputEl: any) {

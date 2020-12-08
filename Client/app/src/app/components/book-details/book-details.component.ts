@@ -14,7 +14,7 @@ import { UsersService } from 'src/app/services/users/users.service';
   styleUrls: ['./book-details.component.css']
 })
 export class BookDetailsComponent implements OnInit {
-  book?: IBook;
+  book!: IBook;
   addReviewForm!: FormGroup;
   constructor(private route: ActivatedRoute, private booksService: BooksService, public usersService: UsersService, private modalService: ModalService) { }
 
@@ -53,7 +53,8 @@ export class BookDetailsComponent implements OnInit {
       let review = new AddReviewModel(this.book!.id, this.addReviewForm.controls.review.value);
       this.booksService.addReview(review).subscribe(res => {
         this.book!.reviews.push(res);
-        this.sortReviewsByDateDesc()
+        this.sortReviewsByDateDesc();
+        this.addReviewForm.reset();
       });
     }
   }
@@ -61,7 +62,7 @@ export class BookDetailsComponent implements OnInit {
   deleteReview(id: number) {
     if (!this.usersService.isAdmin) {
       this.modalService.openModal('Allowed only for admins.');
-    } else if(confirm('Confirm review deletion?')){
+    } else if (confirm('Confirm review deletion?')) {
       this.booksService.deleteReview(id).subscribe(() => this.book!.reviews = this.book!.reviews.filter(r => r.id !== id));
     }
   }

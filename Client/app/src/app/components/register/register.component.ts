@@ -27,7 +27,7 @@ export class RegisterComponent {
 
   registerFormSubmit() {
     if (this.registerForm.invalid) {
-      this.modalService.openModal('Please correctly fill in the fields.');
+      this.modalService.openModal('Please correctly fill in all of the fields.');
       return;
     }
 
@@ -42,9 +42,10 @@ export class RegisterComponent {
   private loginUser() {
     let loginModel = new LoginUserModel(this.registerForm.controls.username.value, this.registerForm.controls.password.value);
 
-    this.usersService.loginUser(loginModel).subscribe(res => this.usersService.persistSession(res));
-
-    this.router.navigate(['/']);
+    this.usersService.loginUser(loginModel).subscribe(res => {
+      this.usersService.persistSession(res);
+      this.router.navigate(['/account']);
+    });
   }
 
   private confirmPasswordValidator(): ValidatorFn {

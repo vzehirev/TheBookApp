@@ -17,12 +17,15 @@ export class AccountDetailsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private modalService: ModalService, private usersService: UsersService) { }
 
   ngOnInit(): void {
-    this.usersService.getUserDetails().subscribe(res => { this.userDetails = res; this.initForm() });
+    this.usersService.getUserDetails().subscribe(res => {
+      this.userDetails = res;
+      this.initForm()
+    });
   }
 
   accDetailsFormSubmit() {
     if (this.accDetailsForm.invalid) {
-      this.modalService.openModal('Please correctly fill in the fields');
+      this.modalService.openModal('Please correctly fill in the required fields.');
     } else {
       let inputModel = new UpdateUserModel(
         this.accDetailsForm.controls.currentPassword.value,
@@ -32,13 +35,15 @@ export class AccountDetailsComponent implements OnInit {
         this.accDetailsForm.controls.confirmNewPassword.value);
 
       this.usersService.updateUserAccount(inputModel).subscribe(() => {
-        let loginUserModel = new LoginUserModel(this.accDetailsForm.controls.username.value,
-          this.accDetailsForm.controls.newPassword.value ?? this.accDetailsForm.controls.currentPassword.value);
+        let loginPass = this.accDetailsForm.controls.newPassword.value.length >= 6 ?
+          this.accDetailsForm.controls.newPassword.value : this.accDetailsForm.controls.currentPassword.value;
+
+        let loginUserModel = new LoginUserModel(this.accDetailsForm.controls.username.value, loginPass);
 
         this.usersService.loginUser(loginUserModel).subscribe(res => {
           this.usersService.persistSession(res);
           this.ngOnInit();
-          this.modalService.openModal('Account successfully updated');
+          this.modalService.openModal('Account successfully updated.');
         });
       });
     }

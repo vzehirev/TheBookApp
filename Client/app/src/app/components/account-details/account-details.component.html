@@ -5,7 +5,7 @@
             <i class="material-icons prefix">lock</i>
             <input id="current-password" type="password" autocomplete="on"
                 formControlName='currentPassword'>
-            <label for="current-password">Current password</label>
+            <label for="current-password">Current password*</label>
             <p class="danger" *ngIf='accDetailsForm.controls.currentPassword.touched && accDetailsForm.controls.currentPassword.errors'>
                 Current password must be between 6 and 50 characters.
             </p>

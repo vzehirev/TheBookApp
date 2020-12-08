@@ -1,0 +1,16 @@
+.loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 10;
+    justify-content: center;
+}
+
+.preloader-wrapper {
+    width: 110px;
+    height: 110px;
+    top: 25%;
+}

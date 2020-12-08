@@ -22,6 +22,8 @@ import { EditBookComponent } from './components/edit-book/edit-book.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth';
 import { ErrorInterceptor } from './interceptors/error';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerInterceptor } from './interceptors/loading';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { ErrorInterceptor } from './interceptors/error';
     AccountComponent,
     AccountDetailsComponent,
     MyBooksComponent,
-    EditBookComponent
+    EditBookComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,8 @@ import { ErrorInterceptor } from './interceptors/error';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingSpinnerInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
