@@ -1,7 +1,8 @@
-Books sharing app where people can share their own favourite book/s with a brief description/review. Other users can upvote and downvote the book as well as leave their own reviews/comments.
+# The app
+Books sharing SPA where people can share their favourite book/s with a brief review/description. The books can be upvoted/downvoted as well as reviewed/commented by the users. Users can manage their accounts.
 
 # Server-side
-ASP.NET Core WebApi, very basic and naive JWT authentication with roles. MS SQL server, Entity framework, Cloudinary for uploading and storing images (book covers), sending e-mails (forgotten password) using Gmail and SMTP.
+ASP.NET Core WebAPI, JWT authentication with roles, MS SQL server, Entity framework, Cloudinary for uploading and storing images (books' covers), sending e-mails (forgotten password) using SMTP and Gmail.
 
 # Client-side
 Full Angular 10 SPA with Materialize CSS. Fully responsive.
@@ -17,7 +18,7 @@ Full Angular 10 SPA with Materialize CSS. Fully responsive.
 - All the books are visible for everyone (auth or not)
 - Books can be sorted by year of issue or top rated
 - Only logged in users can add new books
-- Only logged in users can comment/review a book
+- Only logged in users can review/comment a book
 - Only logged in users can upvote/downvote a book. Votes can't be duplicated (YouTube style)
 
 Proper validation is used for all of the inputs and forms within the application.
@@ -25,4 +26,4 @@ Some of the routes are protected by guards.
 Server-side errors are handled using interceptor.
 4 dynamic pages - books, book details, account, edit book.
 Angular's HttpClient and REST are used for client and server communication.
-App is deployed in Azure: https://tba.azurewebsites.net/ (initial app loading is slow due to using a free tier plan!)
+App is deployed in Azure: https://tba.azurewebsites.net/ (!initial loading is slow due to using a free tier plan)
