@@ -1,7 +1,7 @@
-export class Endpoints {
-    static Server = 'https://localhost:44386';
+import { environment } from 'src/environments/environment';
 
-    static Auth = `${Endpoints.Server}/auth`;
+export class Endpoints {
+    static Auth = `${environment.server}/auth`;
     static Register = `${Endpoints.Auth}/register`;
     static Login = `${Endpoints.Auth}/login`;
     static RefreshJwt = `${Endpoints.Auth}/refreshJwt`;
@@ -9,7 +9,7 @@ export class Endpoints {
     static UserDetails = `${Endpoints.Auth}/user-details`;
     static UpdateUser = `${Endpoints.Auth}/update-user`;
 
-    static Books = `${Endpoints.Server}/books`;
+    static Books = `${environment.server}/books`;
     static AllBooks = Endpoints.Books;
     static GetBook = Endpoints.Books;
     static MyBooks = `${Endpoints.Books}/my-books`;

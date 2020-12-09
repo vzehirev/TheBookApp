@@ -7,17 +7,20 @@
     margin-bottom: 10px;
 }
 
-a {
-    display: inline-block;
-    padding: 1rem;
-    font-size: 1.1rem;
-}
-
 .card {
     text-align: center;
     height: 450px;
     display: flex;
     flex-direction: column;
+    transition: .4s all;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.04);
+    transition: .4s all;
+    border-radius: 20px;
 }
 
 .details-link:hover {
@@ -29,6 +32,8 @@ hr {
     margin: 0 auto;
     width: 75%;
     opacity: 0.4;
+    margin-top: auto;
+    margin-bottom: 20px;
 }
 
 .card .card-image .card-title {
@@ -39,9 +44,14 @@ hr {
     overflow-wrap: break-word;
 }
 
+a{
+    color:gray
+}
+
 .card .card-image img {
     height: 250px;
-    object-fit: cover;
+    object-fit: contain;
+    background-color: azure;
 }
 
 .upvotes, .downvotes {
@@ -58,7 +68,7 @@ hr {
     color: tomato;
 }
 
-.year{
+.year {
     font-weight: bold;
     font-style: italic;
 }
