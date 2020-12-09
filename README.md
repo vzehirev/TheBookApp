@@ -21,9 +21,10 @@ Full Angular 10 SPA with Materialize CSS. Fully responsive.
 - Only logged in users can review/comment a book
 - Only logged in users can upvote/downvote a book. Votes can't be duplicated (YouTube style)
 
-Proper validation is used for all of the inputs and forms within the application.
-Some of the routes are protected by guards.
-Server-side errors are handled using interceptor.
-4 dynamic pages - books, book details, account, edit book.
-Angular's HttpClient and REST are used for client and server communication.
-App is deployed in Azure: https://tba.azurewebsites.net/ (!initial loading is slow due to using a free tier plan)
+3. Other
+- Proper validation is used for all of the inputs and forms within the application.
+- Some of the routes are protected by guards.
+- Server-side errors are handled using interceptor.
+- 4 dynamic pages - books, book details, account, edit book.
+- Angular's HttpClient and REST are used for client and server communication.
+- App is deployed in Azure: https://tba.azurewebsites.net/ (!initial loading is slow due to using a free tier plan)
