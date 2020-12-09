@@ -5,7 +5,7 @@ Books sharing SPA where people can share their favourite book/s with a brief rev
 ASP.NET Core WebAPI, JWT authentication with roles, MS SQL server, Entity framework, Cloudinary for uploading and storing images (books' covers), sending e-mails (forgotten password) using SMTP and Gmail.
 
 # Client-side
-Full Angular 10 SPA with Material CSS. Fully responsive.
+Full Angular 10 SPA with Materialize CSS. Fully responsive.
 
 1. Auth
 - JWT is used for authentication, authorization and session handling
